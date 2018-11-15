@@ -11,7 +11,7 @@ export class Main extends React.Component {
     this.state = {
       data: data.lists,
     }
-  };
+  }
 
   // onChangeName() {
   //   this.props.listData.listName(this.state.listName);

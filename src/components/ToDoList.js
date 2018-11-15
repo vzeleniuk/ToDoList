@@ -7,7 +7,7 @@ export class ToDoList extends React.Component {
     this.state = {
       data: data.lists,
     }
-  };
+  }
 
   render() {
     return(

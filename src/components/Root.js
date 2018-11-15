@@ -1,10 +1,12 @@
 import React from 'react';
 import { Aside } from './Aside';
-import { Header } from './Header';
 import { Main } from './Main';
 import { ToDoList} from './ToDoList';
+import { User } from './User';
+import { Header } from './Header'
 
 export class Root extends React.Component {
+
   render() {
     return (
       <div className="cover-container d-flex w-100 mx-auto flex-column page-wrapper">
@@ -18,6 +20,7 @@ export class Root extends React.Component {
               <Main>
                 <ToDoList/>
               </Main>
+              <User/>
             </div>
           </div>
         </div>
@@ -25,3 +28,4 @@ export class Root extends React.Component {
     );
   }
 }
+  
