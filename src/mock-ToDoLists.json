@@ -1,0 +1,20 @@
+{"lists":
+  [
+    {"id": 1,
+    "listName": "Shopping List",
+    "dateCreated": "2018-11-14",
+    "items": ["Buy", "Some", "Stuff", "You", "Need"]
+    },
+    {"id": 2,
+      "listName": "Important Stuff",
+      "dateCreated": "2018-07-04",
+      "items": ["Do", "Valuable", "Things"]
+
+    },
+    {"id": 3,
+      "listName": "Kitty Stuff",
+      "dateCreated": "2018-02-01",
+      "items": ["Make", "Your", "Lovely", "Pat", "Very", "Happy"]
+    }
+  ]
+}
