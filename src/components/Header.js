@@ -11,7 +11,7 @@ export const Header = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarCollapse">
           <ul className="navbar-nav ml-auto">
-            <li><Link to={"/"} className="nav-link">Root</Link></li>
+            <li><Link to={"/"} className="nav-link">Home</Link></li>
             <li><Link to={"/user"} className="nav-link">User</Link></li>
           </ul>
         </div>
