@@ -7,14 +7,16 @@ export class Main extends React.Component {
     super();
     this.state = {
       data: data.lists,
+      listName: 'Shopping List'
     }
+    console.log('--List Title--', data.lists[0].listName)
   }
 
-  onChangeName() {
-    this.props.listData.listName(this.state.listName);
-  };
+  // onChangeName() {
+    
+  // }
 
-  onNameChange(event) {
+  onHandleChange(event) {
     this.setState({
       listName: event.target.value
     })
@@ -23,15 +25,16 @@ export class Main extends React.Component {
   render() {
     return(
       <main className="container-main">
-      <h1 className="cover-heading mt-4 mb-4">{this.state.data[this.props.match.params.id-1].listName}</h1>
-      {console.log('--List Title--', this.props.match.params.id)}
-        <p>Created: {this.state.data[this.props.match.params.id-1].dateCreated}</p>
+      <h1 className="cover-heading mt-4 mb-4">{this.state.data[this.props.match.params.id - 1].listName}</h1>
+        <p>Created: {this.state.data[this.props.match.params.id - 1].dateCreated}</p>
         <div className="text-left">
             <ul>
-              {this.state.data[this.props.match.params.id-1].items.map((item, i) => <li key={i}>{item}</li>)}
+              {this.state.data[this.props.match.params.id - 1].items.map((item, i) => <li key={i}>{item}</li>)}
             </ul>
           <div className="row mb-4">
-            <input type="text" value={this.state.data[this.props.match.params.id-1].listName} onChange={(event) => this.onNameChange(event)}/>
+            <input type="text" 
+                  value={this.state.data[this.props.match.params.id - 1].listName} 
+                  onChange={(event) => this.onHandleChange(event)}/>
             <button onClick={() => this.onChangeName()} className="btn btn-primary">Change List Name</button>
           </div>
         </div>
