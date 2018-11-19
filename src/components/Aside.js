@@ -15,8 +15,7 @@ export class Aside extends React.Component {
       <aside>
         <h4 className="mt-4 mb-4">My TODOs</h4>
         <div className="list-group">
-          {this.state.data.map((name, i) =><Link to={`/${name.id}`} className="list-group-item list-group-item-secondary" key={i}>{name.listName}</Link>)}
-          {/* <Link to={"/root"} className="list-group-item list-group-item-secondary">{this.state.data[0].listName}</Link> */}
+          {this.state.data.map((name, i) => <Link to={`/${name.id}`} className="list-group-item list-group-item-secondary" key={i}>{name.listName}</Link>)}
         </div>
       </aside>
     )
