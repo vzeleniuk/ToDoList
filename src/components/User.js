@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export class User extends React.Component {
+  onGreet() {
+    alert('Hello, User!');
+  }
+
   render() {
     return(
       <div className="container-main">
@@ -9,7 +13,7 @@ export class User extends React.Component {
           <h1 className="cover-heading mt-4 mb-4">User Name</h1>
         </div>
         <div className="row">
-          <button onClick={this.props.greet} className="btn btn-primary">Greet</button>
+          <button onClick={this.onGreet} className="btn btn-primary">Greet</button>
         </div>
       </div>
     )
