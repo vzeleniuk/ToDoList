@@ -13,11 +13,37 @@
   justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.checkbox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox input[type=checkbox] {
+  margin: 4px 10px 0;
+  line-height: normal;
+}
+
+input[type='checkbox']:after{
+  content: '';
+  display: inline-block;
+  line-height: 1.5;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: -4px;
+  margin-left: -4px;
+  vertical-align: 19px;
+  border: 1px solid #7c7c7c;
+  border-radius: 0.25em;
+  background-color: #c7c7c7;
+}
+
+input[type='checkbox']:checked:after {
+  width: 1.1rem;
+  height: 1.1rem;
+  background-color: #343a40;
+}
+
+label.line {
+  text-decoration: line-through;
 }

@@ -3,17 +3,17 @@
     {"id": 1,
     "listName": "Shopping List",
     "dateCreated": "2018-11-14",
-    "items": [{"text": "Buy", "id": "2018-11-12"}, {"text": "Some", "id": "2018-11-13"}, {"text": "Stuff", "id": "2018-11-14"}, {"text": "You", "id": "2018-11-15"}, {"text": "Need", "id": "2018-11-16"}]
+    "items": [{"text": "Buy", "id": "2018-11-12", "checked": false}, {"text": "Some", "id": "2018-11-13", "checked": false}, {"text": "Stuff", "id": "2018-11-14", "checked": false}, {"text": "You", "id": "2018-11-15", "checked": false}, {"text": "Need", "id": "2018-11-16", "checked": false}]
     },
     {"id": 2,
       "listName": "Important Stuff",
       "dateCreated": "2018-07-04",
-      "items": [{"text": "Do", "id": "2018-11-17"}, {"text": "Valuable", "id": "2018-11-18"}, {"text": "Things", "id": "2018-11-19"}]
+      "items": [{"text": "Do", "id": "2018-11-17", "checked": false}, {"text": "Valuable", "id": "2018-11-18", "checked": false}, {"text": "Things", "id": "2018-11-19", "checked": false}]
     },
     {"id": 3,
       "listName": "Kitty Stuff",
       "dateCreated": "2018-02-01",
-      "items": [{"text": "Make", "id": "2018-11-01"}, {"text": "Your", "id": "2018-11-02"}, {"text": "Lovely", "id": "2018-11-03"}, {"text": "Pet", "id": "2018-11-04"}, {"text": "Very", "id": "2018-11-05"}, {"text": "Happy", "id": "2018-11-06"}]
+      "items": [{"text": "Make", "id": "2018-11-01", "checked": false}, {"text": "Your", "id": "2018-11-02", "checked": false}, {"text": "Lovely", "id": "2018-11-03", "checked": false}, {"text": "Pet", "id": "2018-11-04"}, {"text": "Very", "id": "2018-11-05", "checked": false}, {"text": "Happy", "id": "2018-11-06", "checked": false}]
     }
   ]
 }

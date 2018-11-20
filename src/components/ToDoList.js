@@ -1,7 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 
 export class ToDoList extends React.Component {
+  constructor(props) {    
+    super(props)
+    this.state = {
+      condition: false
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick() {
+    this.setState({
+      condition: !this.state.condition
+    })
+  }
+
+  todoCompleted(i) {
+    console.log('--todoCompleted--',this.props.listItems, '--i--', i);
+    if(!this.props.listItems[i].checked){
+      this.props.listItems[i].checked = true;
+    }
+    else {
+      this.props.listItems[i].checked = false;
+    }
+  };
+
   render() {
     return(
       <div className="col-12 col-md-12">
@@ -13,9 +38,17 @@ export class ToDoList extends React.Component {
         </div>
         <div className="row">
           <div className="col-12 col-md-12 text-left">
-            <ul>
-              {this.props.listItems.map((item) => <li key={item.id}>{item.text}</li>)}
-            </ul>
+            <CheckboxGroup
+              className="checkbox"
+              checkboxDepth={2}
+              name="listItems">
+              {this.props.listItems.map((item, i) => <label key={i} onChange={() => this.todoCompleted(i)} 
+                checked={item.checked} 
+                onClick={ this.handleClick}
+                className={this.state.condition ? "line" : null }>
+                <Checkbox value={item.text}/>{item.text}</label>)}
+              {console.log('--Clicked Item--', this.props.listItems, this.state.condition )}
+            </CheckboxGroup>
           </div>
         </div>
       </div>
