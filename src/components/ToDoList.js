@@ -1,14 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 
 export class ToDoList extends React.Component {
   constructor(props) {    
     super(props)
     this.state = {
+      items: [...props.listItems],
       condition: false
     }
     this.handleClick = this.handleClick.bind(this)
+    console.log('--ToDoList State--', this.state.items);
+  }
+
+  // componentDidMount() {
+  //   this.setState({
+  //     items: [...props.listItems],
+  //   });
+  //   console.log('--Component received new props--');
+  // }
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      items: [...nextProps.listItems],
+    });
+    console.log('--ToDoList received new props--');
   }
 
   handleClick() {
@@ -18,14 +33,23 @@ export class ToDoList extends React.Component {
   }
 
   todoCompleted(i) {
-    console.log('--todoCompleted--',this.props.listItems, '--i--', i);
-    if(!this.props.listItems[i].checked){
+    if (this.props.listItems[i].checked) {
+      this.props.listItems[i].checked = false;
+    } else {
       this.props.listItems[i].checked = true;
     }
-    else {
-      this.props.listItems[i].checked = false;
-    }
-  };
+  }
+
+  deleteItem(itemId) {
+    const updatedArray = this.state.items.filter(item => {
+      return item.id !== itemId;
+    })
+    this.setState({
+      items: [...updatedArray]
+    });
+    console.log('--deleteItem?--', this.state.items);
+  }
+
 
   render() {
     return(
@@ -36,21 +60,36 @@ export class ToDoList extends React.Component {
             <p>Created: {this.props.dateCreated}</p>
           </div>
         </div>
-        <div className="row">
-          <div className="col-12 col-md-12 text-left">
-            <CheckboxGroup
-              className="checkbox"
-              checkboxDepth={2}
-              name="listItems">
-              {this.props.listItems.map((item, i) => <label key={i} onChange={() => this.todoCompleted(i)} 
-                checked={item.checked} 
-                onClick={ this.handleClick}
-                className={this.state.condition ? "line" : null }>
-                <Checkbox value={item.text}/>{item.text}</label>)}
-              {console.log('--Clicked Item--', this.props.listItems, this.state.condition )}
-            </CheckboxGroup>
+        {/* <div className="row justify-content-md-center">
+          <div className="col-12 col-md-8 text-left">
+            <ul className="checkbox">
+              {this.props.listItems.map((item, i) => (
+                <li key={i}>
+                    <input type="checkbox" id={item.id} onChange={() => this.todoCompleted(i)}
+                            checked={item.checked} onClick={this.handleClick}/> 
+                    <label className="checkbox-label" htmlFor={item.id}> {item.text}</label>
+                  <button type="button" className="btn btn-danger btn-sm btn-del" onClick={() => this.deleteItem(item.id)}>x</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div> */}
+
+        <div className="row justify-content-md-center">
+          <div className="col-12 col-md-8 text-left">
+            <ul className="checkbox">
+              {this.state.items.map((item, i) => (
+                <li key={i}>
+                    <input type="checkbox" id={item.id} onChange={() => this.todoCompleted(i)}
+                            checked={item.checked} onClick={this.handleClick}/> 
+                    <label className="checkbox-label" htmlFor={item.id}> {item.text}</label>
+                  <button type="button" className="btn btn-danger btn-sm btn-del" onClick={() => this.deleteItem(item.id)}>x</button>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
+        
       </div>
     )
   }

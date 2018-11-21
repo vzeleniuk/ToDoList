@@ -1,36 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Main } from './Main';
 import { Aside } from './Aside';
 
-
 export class Root extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      id: ''
+    }
+  }
+
+  fromAside(params) {
+    this.setState({
+      id: params
+    })
+  }
+
   render() {
-    return (
-      <Router>
+    return(
+      <div className="container">
         <div className="row">
           <div className="col-md-4 col-4">
-            <aside>
-              <Aside />
-            </aside> 
+            <Aside callback={(params) => this.fromAside(params)}/>
           </div>
           <div className="col-md-8 col-8">
-            <Route 
-                  exact
-                  path={"/"}
-                  render={() => <h3 className="cover-heading mt-4 mb-4 text-center">Choose your ToDoList</h3>}/>
-            <Route path={"/:id"} component={Main}/>
+            <Main id={this.state.id}/>
           </div>
         </div>
-      </Router>
-    );
+      </div>
+    )
   }
 }
 
 Root.propTypes = {
-  listName: PropTypes.string,
-  dateCreated: PropTypes.string,
-  items: PropTypes.array,
-  data: PropTypes.object,
+  callback: PropTypes.func,
+  data: PropTypes.object
 }
