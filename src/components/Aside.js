@@ -1,17 +1,62 @@
 import React from 'react';
 import data from '../mock-ToDoLists.json';
 import PropTypes from 'prop-types';
+import { base } from './Firebase/firebase'
+// import { app } from './Firebase/firebase'
+
 
 export class Aside extends React.Component {
   constructor() {
     super();
+    this.addList = this.addList.bind(this);
+
     this.state = {
       data: data.lists,
+      lists: {}
     }
+    console.log('Aside Lists', this.state.lists)
+  }
+
+  // getData(values){
+  //   let listsVal = values;
+  //   let lists = this.listsVal
+  //                     .keys()
+  //                     .map(listKey => {
+  //                         let cloned = this.clone(listsVal[listKey]);
+  //                         cloned.key = listKey;
+  //                         return cloned;
+  //                     })
+  //                     .value();
+  //     this.setState({
+  //       lists: [...lists]
+  //     });
+  // }
+
+  componentDidMount() {
+    this.listRef = base.syncState('lists', {
+      context: this,
+      state: 'lists'
+    });
+    console.log('Aside Lists', this.state.lists)
+  }
+
+  addList(title) {
+    const lists = {...this.state.lists};
+    const id = Date.now()
+    lists[id] = {
+      id: id,
+      title: title,
+      chordpro: ''
+    };
+    
   }
 
   getContent(id) {
     this.props.callback(id);
+  }
+
+  componentWillUnmount() {
+    base.removeBinding(this.listRef);
   }
 
   render() {
