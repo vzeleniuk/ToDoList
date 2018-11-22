@@ -1,43 +1,46 @@
 import React from 'react';
 import data from '../mock-ToDoLists.json';
 import PropTypes from 'prop-types';
-import { base } from './Firebase/firebase'
-// import { app } from './Firebase/firebase'
+import { base } from './Firebase/firebase';
+import { Pulse } from 'react-preloading-component';
 
 
 export class Aside extends React.Component {
   constructor() {
     super();
     this.addList = this.addList.bind(this);
-
     this.state = {
       data: data.lists,
-      lists: {}
+      loading: true,
+      lists: []
     }
-    console.log('Aside Lists', this.state.lists)
+    console.log('Aside Lists State', this.state.lists, this.state.loading)
   }
 
-  // getData(values){
-  //   let listsVal = values;
-  //   let lists = this.listsVal
-  //                     .keys()
-  //                     .map(listKey => {
-  //                         let cloned = this.clone(listsVal[listKey]);
-  //                         cloned.key = listKey;
-  //                         return cloned;
-  //                     })
-  //                     .value();
-  //     this.setState({
-  //       lists: [...lists]
-  //     });
-  // }
+  getLists() {
+    return new Promise((resolve, reject) => {
+      if (base) {
+        resolve(
+          this.listRef = base.syncState('lists', {
+            context: this,
+            state: 'lists',
+            asArray: true
+          })
+        )
+        console.log('Aside Lists in promise', this.state.lists, this.state.loading)
+      } else {
+        const reason = new Error('On maitenance');
+          reject(reason);
+      }
+    })
+  }
 
   componentDidMount() {
-    this.listRef = base.syncState('lists', {
-      context: this,
-      state: 'lists'
-    });
-    console.log('Aside Lists', this.state.lists)
+    this.getLists()
+    .then(this.setState({loading: false}))
+    .then(setTimeout(() => this.getLists(), 3000))
+    .catch(error => console.log(error));
+    console.log('Aside Lists in Mount', this.state.lists, this.state.loading)
   }
 
   addList(title) {
@@ -48,7 +51,7 @@ export class Aside extends React.Component {
       title: title,
       chordpro: ''
     };
-    
+    this.setState({lists});
   }
 
   getContent(id) {
@@ -56,10 +59,20 @@ export class Aside extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log('Aside Lists -- Component Will UnMount', this.state.lists, this.state.loading)
     base.removeBinding(this.listRef);
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <div style={{ textAlign: "center", position: "absolute", top: "25%", left: "50%" }}>
+          <h3>Loading</h3>
+          <Pulse />
+        </div>
+      )
+    }
+
     return(
       <aside>
         <h4 className="mt-4 mb-4 text-center">My TODOs</h4>
@@ -67,6 +80,11 @@ export class Aside extends React.Component {
           {this.state.data.map((name, i) => (
             <p onClick={() => this.getContent(name.id)} className="list-group-item list-group-item-secondary" key={i}>{name.listName}</p>))}
         </div>
+        
+        {this.state.lists 
+        ? <p>Lists from Firebase: {this.state.lists.id}</p>
+        : <p>Lists from Firebase: no data</p>}
+        
       </aside>
     )
   }
