@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import data from '../mock-ToDoLists.json';
+import { Router } from 'react-router-dom';
+import { base } from './Firebase/firebase';
+
 
 export class Main extends React.Component {
   constructor(props) {
@@ -14,27 +16,14 @@ export class Main extends React.Component {
     console.log('--Main constructor--', props);
   }
 
-  // componentDidMount() {
-  //   const listIndex = this.props.data;
-  //   this.setState({
-  //     data: data.lists,
-  //     listName: data.lists[listIndex].listName,
-  //     dateCreated: data.lists[listIndex].dateCreated,
-  //     items: [...data.lists[listIndex].items]
-  //   });
-  //   console.log('--Component did mount--', this.props, listIndex);
-  // }
-
   componentWillReceiveProps(nextProps) {
-    const listIndex = data.lists.map(item => item.id).indexOf(parseInt(nextProps.id, 10));
     this.setState({
-      data: data.lists,
-      listName: data.lists[listIndex].listName,
-      dateCreated: data.lists[listIndex].dateCreated,
-      items: [...data.lists[listIndex].items],
-      checked: data.lists[listIndex].checked
+      key: nextProps.list.key,
+      listName: nextProps.list.listName,
+      dateCreated: nextProps.list.dateCreated,
+      items: [...nextProps.list.items]
     });
-    console.log('--Main received new props--');
+    console.log('--Main received new props--', nextProps.list);
   }
 
   // onChangeName() {
@@ -66,7 +55,19 @@ export class Main extends React.Component {
     this.setState(state => ({
       items: state.items.concat(newItem),
       text: ''
-    }));
+    }))
+    this.addTodo()
+  }
+
+  addTodo(newItem) {
+    base.post(`lists/${this.state.key}/items`, {
+      data: [...newItem]
+    }).then(() => {
+      Router.transitionTo('/');
+    }).catch(err => {
+      console.log(err)
+    });
+    console.log('--addTodo--', this.nextProps.list.key, newItem)
   }
 
   handleClick() {
@@ -96,7 +97,7 @@ export class Main extends React.Component {
   render() {
     return(
       <main className="container-main">
-        {this.state.data 
+        {this.state.listName 
           ? <div className="col-12 col-md-12">
               <div className="row">
                 <div className="col-12 col-md-12">
@@ -120,7 +121,7 @@ export class Main extends React.Component {
               </div>
             </div>
           : <h2 className="mt-4">Choose your ToDoList</h2>}
-        {this.state.data
+        {this.state.listName
           ? <div className="row mt-4">
               <form onSubmit={(e) => this.handleAddTodo(e)}>
                 <div className="form-group">

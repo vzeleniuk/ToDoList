@@ -13,7 +13,7 @@ export class Root extends React.Component {
 
   fromAside(params) {
     this.setState({
-      id: params
+      list: params
     })
   }
 
@@ -25,7 +25,7 @@ export class Root extends React.Component {
             <Aside callback={(params) => this.fromAside(params)}/>
           </div>
           <div className="col-md-8 col-8">
-            <Main id={this.state.id}/>
+            <Main list={this.state.list}/>
           </div>
         </div>
       </div>
@@ -35,5 +35,5 @@ export class Root extends React.Component {
 
 Root.propTypes = {
   callback: PropTypes.func,
-  data: PropTypes.object
+  list: PropTypes.object
 }

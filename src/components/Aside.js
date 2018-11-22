@@ -1,5 +1,4 @@
 import React from 'react';
-import data from '../mock-ToDoLists.json';
 import PropTypes from 'prop-types';
 import { base } from './Firebase/firebase';
 import { Pulse } from 'react-preloading-component';
@@ -10,7 +9,6 @@ export class Aside extends React.Component {
     super();
     this.addList = this.addList.bind(this);
     this.state = {
-      data: data.lists,
       loading: true,
       lists: []
     }
@@ -27,7 +25,6 @@ export class Aside extends React.Component {
             asArray: true
           })
         )
-        console.log('Aside Lists in promise', this.state.lists, this.state.loading)
       } else {
         const reason = new Error('On maitenance');
           reject(reason);
@@ -38,7 +35,6 @@ export class Aside extends React.Component {
   componentDidMount() {
     this.getLists()
     .then(this.setState({loading: false}))
-    .then(setTimeout(() => this.getLists(), 3000))
     .catch(error => console.log(error));
     console.log('Aside Lists in Mount', this.state.lists, this.state.loading)
   }
@@ -48,14 +44,15 @@ export class Aside extends React.Component {
     const id = Date.now()
     lists[id] = {
       id: id,
-      title: title,
-      chordpro: ''
+      listName: title,
+      dateCreated: new Date().toISOString(id),
+      items: []
     };
     this.setState({lists});
   }
 
-  getContent(id) {
-    this.props.callback(id);
+  getContent(item) {
+    this.props.callback(item);
   }
 
   componentWillUnmount() {
@@ -64,27 +61,17 @@ export class Aside extends React.Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return (
-        <div style={{ textAlign: "center", position: "absolute", top: "25%", left: "50%" }}>
-          <h3>Loading</h3>
-          <Pulse />
-        </div>
-      )
-    }
-
     return(
       <aside>
         <h4 className="mt-4 mb-4 text-center">My TODOs</h4>
-        <div className="list-group">
-          {this.state.data.map((name, i) => (
-            <p onClick={() => this.getContent(name.id)} className="list-group-item list-group-item-secondary" key={i}>{name.listName}</p>))}
-        </div>
-        
-        {this.state.lists 
-        ? <p>Lists from Firebase: {this.state.lists.id}</p>
-        : <p>Lists from Firebase: no data</p>}
-        
+        {this.state.lists.length > 1 
+          ? <div className="list-group">
+              {this.state.lists.map((item, i) => (
+                <p onClick={() => this.getContent(item)} className="list-group-item list-group-item-secondary" key={i}>{item.listName}</p>))}
+            </div>
+          : <div className="row mt-6">
+              <Pulse />
+            </div>}
       </aside>
     )
   }
