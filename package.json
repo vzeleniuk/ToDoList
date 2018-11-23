@@ -12,7 +12,12 @@
     "react-checkbox-group": "^4.0.1",
     "react-dom": "^16.6.1",
     "react-preloading-component": "0.0.5",
-    "react-router-dom": "^4.3.1"
+    "react-redux": "^5.1.1",
+    "react-redux-firebase": "^2.2.2",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

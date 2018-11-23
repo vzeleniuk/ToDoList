@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Router } from 'react-router-dom';
-import { base } from './Firebase/firebase';
 
-
-export class Main extends React.Component {
+export class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,7 +15,7 @@ export class Main extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      key: nextProps.list.key,
+      // key: nextProps.list.key,
       listName: nextProps.list.listName,
       dateCreated: nextProps.list.dateCreated,
       items: [...nextProps.list.items]
@@ -56,19 +53,21 @@ export class Main extends React.Component {
       items: state.items.concat(newItem),
       text: ''
     }))
-    this.addTodo()
+    // this.addTodo()
   }
 
-  addTodo(newItem) {
-    base.post(`lists/${this.state.key}/items`, {
-      data: [...newItem]
-    }).then(() => {
-      Router.transitionTo('/');
-    }).catch(err => {
-      console.log(err)
-    });
-    console.log('--addTodo--', this.nextProps.list.key, newItem)
-  }
+  // addTodo(newItem) {
+  //   base.post(`lists/${this.state.key}/items`, {
+  //     data: [...newItem]
+  //   })
+  //   .then(() => {
+  //     Router.transitionTo('/');
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   });
+  //   console.log('--addTodo--', this.nextProps.list.key, newItem)
+  // }
 
   handleClick() {
     this.setState({
@@ -135,7 +134,16 @@ export class Main extends React.Component {
               </form>
             </div>
           : null}
-      
+     
+      <div className="row mt-4 mb-4">
+        {this.state.listName 
+          ? <input className="form-control" 
+            type="text" 
+            value={this.state.listName}
+            onChange={(event) => this.onHandleChange(event)}/>
+          : null}
+          {/* <button onClick={() => this.onChangeName()} className="btn btn-primary mt-4">Change List Name</button> */}
+        </div>
       </main>
     )
   }
