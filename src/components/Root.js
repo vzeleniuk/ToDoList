@@ -28,7 +28,8 @@ class Root extends React.Component {
       if (this.props.lists) {
         resolve(
           this.props.lists
-        )} else {
+        )
+      } else {
           const reason = new Error('On maitenance');
           reject(reason);
         }
@@ -38,8 +39,7 @@ class Root extends React.Component {
   componentDidMount() {
     this.getLists()
     .then(this.setState({loading: false}))
-    .catch(error => console.log(error));
-    console.log('Did Mount', this.props.lists);
+    .catch(error => error);
   }
 
   render() {
@@ -75,7 +75,5 @@ const mapStateToProps = (state) => {
 
 export default compose(
   connect(mapStateToProps),
-  firebaseConnect([
-    'lists'
-  ])
+  firebaseConnect(['lists'])
 )(Root)

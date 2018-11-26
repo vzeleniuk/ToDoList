@@ -1,87 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
 import { compose } from 'redux';
+import { firebaseConnect } from 'react-redux-firebase';
+import { addTodo, removeTodo } from '../store/actions/itemActions';
 
 class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [],
-      text: '',
+      newTodo: {},
       condition: false,
-      id: ''
+      id: '',
+      listName: ''
     }
-    this.handleClick = this.handleClick.bind(this)
-    console.log('--Main constructor--', props);
+    this.handleClick = this.handleClick.bind(this);
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (this.props.lists) {
-  //     if (nextProps.list.items) {
-  //       this.setState({
-  //         // key: nextProps.list.key,
-  //         listName: nextProps.list.listName,
-  //         dateCreated: nextProps.list.dateCreated,
-  //         items: [...nextProps.list.items]
-  //       })
-  //     } else {
-  //       this.setState({
-  //         // key: nextProps.list.key,
-  //         listName: nextProps.list.listName,
-  //         dateCreated: nextProps.list.dateCreated,
-  //         items: []
-  //       })
-  //     }
-  //   } else  {console.log('--no data--'); return null}
-  // }
 
   // onChangeName() {
-  // data.lists[this.listIndex].listName = 'New'
-  // this.forceUpdate()
   // }
 
-  onHandleChange(event) {
+  handleNewTodo(e) {
+    const id = Date.now();
     this.setState({
-      listName: event.target.value
-    })
-  }
-
-  handleTodoText(e) {
-    this.setState({ 
-      text: e.target.value 
+      newTodo: {
+        id,
+        text: e.target.value,
+        checked: false
+      }
     });
   }
 
-  handleAddTodo(e) {
-    e.preventDefault();
-    if (!this.state.text.length) {
-      return;
-    }
-    const newItem = {
-      text: this.state.text,
-      id: Date.now()
-    };
-    this.setState(state => ({
-      items: state.items.concat(newItem),
-      text: ''
-    }))
-    // this.addTodo()
+  addTodo() {
+    this.props.addTodo(this.state.newTodo, this.props.list.key);
   }
-
-  // addTodo(newItem) {
-  //   base.post(`lists/${this.state.key}/items`, {
-  //     data: [...newItem]
-  //   })
-  //   .then(() => {
-  //     Router.transitionTo('/');
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   });
-  //   console.log('--addTodo--', this.nextProps.list.key, newItem)
-  // }
 
   handleClick() {
     this.setState({
@@ -90,29 +42,46 @@ class Main extends Component {
   }
 
   todoCompleted(i) {
-    if (this.props.list.value.items[i].checked) {
-      this.props.list.value.items[i].checked = false;
+    const newArr = this.objToArr();
+    if (newArr[i].checked) {
+      newArr[i].checked = false;
     } else {
-      this.props.list.value.items[i].checked = true;
-      this.setState({
-        id: this.props.list.value.items[i].id
-      })
-      console.log('todoCompleted', this.state.id)
+      newArr[i].checked = true;
+      // this.setState({
+      //   id: this.props.list.value.items[i].id
+      // })
+      // console.log('todoCompleted', this.state.id)
     }
   }
 
-  // deleteItem(itemId) {
-  //   const updatedArray = this.props.list.items.filter(item => {
-  //     return item.id !== itemId;
-  //   })
-  //   this.setState({
-  //     items: [...updatedArray]
-  //   });
-  //   console.log('--deleteItem?--', this.props.list.items);
-  // }
+  deleteTodo(i) {
+    console.log('-id-', i, Object.keys(this.props.list.value.items));
+    const keyTodo = Object.keys(this.props.list.value.items);
+    console.log('-key of Todo for deletion-', keyTodo[i], this.props.list.key)
+    this.props.removeTodo(keyTodo[i], this.props.list.key);
+  }
+
+  objToArr() {
+    const objToArr = [];
+    if (this.props.list && this.props.list.value.items) {
+      Object.keys(this.props.list.value.items).forEach(key => {
+        objToArr.push(this.props.list.value.items[key])
+      })
+    }
+    return objToArr;
+  }
+
+  dateToFormat(date) {
+    const d = new Date(date);
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const day = d.getDate();
+    const monthIndex = d.getMonth();
+    const year = d.getFullYear();
+    return `${monthNames[monthIndex]} ${day}, ${year}`;
+  }
 
   render() {
-    console.log('--props list--', this.props.list)
+    const newArr = this.objToArr();
     return(
       <main className="container-main">
         {this.props.list 
@@ -120,40 +89,44 @@ class Main extends Component {
               <div className="row">
                 <div className="col-12 col-md-12">
                   <h2 className="cover-heading mt-4 mb-4">{this.props.list.value.listName}</h2>
-                  <p>Created: {this.props.list.value.dateCreated}</p>
+                  <p>Created: {this.dateToFormat(this.props.list.value.dateCreated)}</p>
                 </div>
               </div>
               <div className="row justify-content-md-center">
                 <div className="col-12 col-md-8 text-left">
-                  <ul className="checkbox">
-                    {this.props.list.value.items
-                      ? this.props.list.value.items.map((item, i) => (
-                        <li key={i}>
-                            <input type="checkbox" id={item.id} onChange={() => this.todoCompleted(i)}
-                                    checked={item.checked} onClick={this.handleClick}/> 
-                            <label className="checkbox-label" htmlFor={item.id}> {item.text}</label>
-                          <button type="button" className="btn btn-danger btn-sm btn-del" onClick={() => this.deleteItem(item.id)}>x</button>
-                        </li>))
+                  {console.log('--new todo', this.props.list.value.items, newArr)}
+                    {this.props.list.value.items && newArr
+                      ? <ul className="checkbox">
+                        {newArr.map((item, i) => (
+                          <li key={i}>
+                              <input type="checkbox" id={item.id} onChange={() => this.todoCompleted(i)}
+                                      checked={item.checked} onClick={this.handleClick}/> 
+                              <label className="checkbox-label" htmlFor={item.id}> {item.text}</label>
+                            <button type="button" className="btn btn-danger btn-sm btn-del" 
+                            onClick={() => this.deleteTodo(i)}
+                            >x</button>
+                          </li>))}
+                        </ul>
                       : <p className="mt-4 text-center">Start edding ToDo's:</p>
-                    }
-                  </ul> 
+                    } 
                 </div>
               </div>
             </div>
           : <h2 className="mt-4">Choose your ToDoList</h2>}
         {this.props.list
           ? <div className="row mt-4">
-              <form onSubmit={(e) => this.handleAddTodo(e)}>
+              <form>
                 <div className="form-group">
                   {this.props.list.value.items
-                    ? <label htmlFor="new-todo">Add more ToDo</label>
+                    ? <label htmlFor="new-todo">Add more ToDo's</label>
                     : <label htmlFor="new-todo">Add ToDo</label>
                   }
                   <input className="form-control"
                     id="new-todo"
-                    onChange={(e) => this.handleTodoText(e)}
-                    value={this.state.text}/>
-                  <button className="btn btn-primary" disabled={!this.state.text}>Add</button>
+                    onChange={(e) => this.handleNewTodo(e)}
+                    />
+                  <button className="btn btn-primary" disabled={!this.state.newTodo.text} 
+                    onClick={() => this.addTodo()}>Add</button>
                 </div>
               </form>
             </div>
@@ -164,7 +137,7 @@ class Main extends Component {
           ? <input className="form-control" 
             type="text" 
             value={this.props.list.listName}
-            onChange={(event) => this.onHandleChange(event)}/>
+            onChange={(event) => this.onNewListName(event)}/>
           : null}
           <button onClick={() => this.onChangeName()} className="btn btn-primary mt-4">Change List Name</button>
         </div> */}
@@ -177,8 +150,10 @@ Main.propTypes = {
   listName: PropTypes.string,
   dateCreated: PropTypes.string,
   items: PropTypes.array,
-  data: PropTypes.object,
-  text: PropTypes.string
+  text: PropTypes.string,
+  addTodo: PropTypes.func,
+  removeTodo: PropTypes.func,
+  lists: PropTypes.array
 }
 
 const mapStateToProps = (state) => {
@@ -187,19 +162,14 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTodo: (todo, path) => dispatch(addTodo(todo, path)),
+    removeTodo: (id, path) => dispatch(removeTodo(id, path))
+  }
+}
+
 export default compose(
-  connect(mapStateToProps),
-  firebaseConnect((props, state) => {
-    if (props.list && state.id !== undefined) {console.log('firebaseConnect', props.list.key);
-    props.list.value.items.map(
-        (todo, i) =>
-          todo.id === state.id 
-          ? console.log('firebaseConnect MAP', props.list.value.items[i])
-          : null
-      )
-      return [
-        { path: `lists/${props.list.key}/items` }
-      ]
-    }
-  })
-  )(Main)
+  connect(mapStateToProps, mapDispatchToProps),
+  firebaseConnect(['lists'])
+)(Main)

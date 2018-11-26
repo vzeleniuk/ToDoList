@@ -14,11 +14,11 @@ class Aside extends React.Component {
     }
   }
 
-  onHandleChange(e) {
+  onNewListName(e) {
     const id = Date.now();
     this.setState({
       newList: {
-        id: id,
+        id,
         listName: e.target.value,
         dateCreated: new Date().toISOString(id),
         items: []
@@ -35,13 +35,13 @@ class Aside extends React.Component {
   }
 
   render() {
-    console.log('Aside render', this.props)
     return(
       <aside>
         <div className="mt-6">
           <h4 className="mt-4 mb-4 text-center">My TODOs</h4>
           {this.props.lists.length > 1 
             ? <div className="list-group">
+              {console.log('--Aside--', this.props.lists)}
                 {this.props.lists && this.props.lists.map((item) => (
                   <p onClick={() => this.getListTodos(item)} className="list-group-item list-group-item-secondary" key={item.key}>{item.value.listName}</p>
                 ))}
@@ -56,10 +56,9 @@ class Aside extends React.Component {
           ? <input className="form-control" 
             type="text"
             placeholder="Enter New ToDo List Title" 
-            // value={this.state.listNameForm}
-            onChange={(event) => this.onHandleChange(event)}/>
+            onChange={(event) => this.onNewListName(event)}/>
           : null}
-          <button onClick={() => this.addList()} 
+          <button disabled={!this.state.newList.listName} onClick={() => this.addList()} 
             className="btn btn-primary mt-4">Add List</button>
         </div>
       </aside>

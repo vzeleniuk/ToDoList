@@ -8,7 +8,5 @@ export const addList = (list) => {
      .catch((err) => {
        dispatch({ type: 'CREATE_LIST_ERROR', err})
      })
-
   }
-   
 }

@@ -1,9 +1,22 @@
-export const toggleChecked = (checked) => {
+export const addTodo = (todo, path) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
-    firebase.update('lists', checked)
+    firebase.push(`lists/${path}/items/`, todo)
     .then(() => {
-     dispatch({ type: 'TOGGLE_CHECKED', checked }) 
+     dispatch({ type: 'ADD_TODO', todo, path }) 
+    })
+    .catch((err) => {
+      dispatch({ type: 'CREATE_CHECKED_ERROR', err})
+    })
+  }
+}
+
+export const removeTodo = (id, path) => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    firebase.remove(`lists/${path}/items/${id}`)
+    .then(() => {
+     dispatch({ type: 'REMOVE_TODO', id, path }) 
     })
     .catch((err) => {
       dispatch({ type: 'CREATE_CHECKED_ERROR', err})
