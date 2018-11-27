@@ -7,7 +7,13 @@ const listReducer = (state = initState, action) => {
     case 'ADD_LIST':
       console.log('added list', action.list);
       return state;
-    case 'CREATE_LIST_ERROR':
+    case 'REMOVE_LIST':
+      console.log('removed list', action.path);
+      return state;
+    case 'ADD_LIST_ERROR':
+      console.log('add list error', action.err);
+      return state;
+    case 'REMOVE_LIST_ERROR':
       console.log('create list error', action.err);
       return state;
     default: 

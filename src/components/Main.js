@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 import { addTodo, removeTodo } from '../store/actions/itemActions';
 
-class Main extends Component {
+class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,9 +55,7 @@ class Main extends Component {
   }
 
   deleteTodo(i) {
-    console.log('-id-', i, Object.keys(this.props.list.value.items));
     const keyTodo = Object.keys(this.props.list.value.items);
-    console.log('-key of Todo for deletion-', keyTodo[i], this.props.list.key)
     this.props.removeTodo(keyTodo[i], this.props.list.key);
   }
 
@@ -89,12 +87,11 @@ class Main extends Component {
               <div className="row">
                 <div className="col-12 col-md-12">
                   <h2 className="cover-heading mt-4 mb-4">{this.props.list.value.listName}</h2>
-                  <p>Created: {this.dateToFormat(this.props.list.value.dateCreated)}</p>
+                  <p className="h5">Created: {this.dateToFormat(this.props.list.value.dateCreated)}</p>
                 </div>
               </div>
               <div className="row justify-content-md-center">
                 <div className="col-12 col-md-8 text-left">
-                  {console.log('--new todo', this.props.list.value.items, newArr)}
                     {this.props.list.value.items && newArr
                       ? <ul className="checkbox">
                         {newArr.map((item, i) => (
@@ -147,13 +144,10 @@ class Main extends Component {
 }
 
 Main.propTypes = {
-  listName: PropTypes.string,
-  dateCreated: PropTypes.string,
-  items: PropTypes.array,
-  text: PropTypes.string,
   addTodo: PropTypes.func,
   removeTodo: PropTypes.func,
-  lists: PropTypes.array
+  lists: PropTypes.array,
+  list: PropTypes.object
 }
 
 const mapStateToProps = (state) => {

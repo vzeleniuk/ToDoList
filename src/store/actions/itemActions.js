@@ -6,7 +6,7 @@ export const addTodo = (todo, path) => {
      dispatch({ type: 'ADD_TODO', todo, path }) 
     })
     .catch((err) => {
-      dispatch({ type: 'CREATE_CHECKED_ERROR', err})
+      dispatch({ type: 'ADD_TODO_ERROR', err})
     })
   }
 }
@@ -19,7 +19,7 @@ export const removeTodo = (id, path) => {
      dispatch({ type: 'REMOVE_TODO', id, path }) 
     })
     .catch((err) => {
-      dispatch({ type: 'CREATE_CHECKED_ERROR', err})
+      dispatch({ type: 'REMOVE_TODO_ERROR', err})
     })
   }
 }

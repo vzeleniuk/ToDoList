@@ -64,7 +64,8 @@ class Root extends React.Component {
 
 Root.propTypes = {
   callback: PropTypes.func,
-  lists: PropTypes.array
+  lists: PropTypes.array,
+  list: PropTypes.object
 }
 
 const mapStateToProps = (state) => {

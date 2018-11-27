@@ -10,8 +10,8 @@ const App = () => (
     <div className="cover-container d-flex w-100 mx-auto flex-column page-wrapper">
       <Header />
       <Switch>
-        <Route exact path='/' component={Root} />
-        <Route path='/user' component={User} />
+        <Route exact path="/" component={Root} />
+        <Route path="/user" component={User} />
       </Switch>
     </div>
   </Router>
