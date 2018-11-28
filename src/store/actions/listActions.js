@@ -1,31 +1,49 @@
-export const requestList = () => {
-  return { type: 'REQUESTED_LIST' }
+
+// export const addList = (list) => {
+//   return (dispatch, getState, { getFirebase }) => {
+//      const firebase = getFirebase();
+//      firebase.push('lists', list)
+//      .then(() => {
+//       dispatch({ type: 'ADD_LIST', list }) 
+//      })
+//      .catch((err) => {
+//        dispatch({ type: 'ADD_LIST_ERROR', err})
+//      })
+//   }
+// }
+
+export const requestLists = () => {
+  return { type: 'REQUEST_LISTS' } 
 };
 
-export const requestListSuccess = (data) => {
-  return { type: 'REQUESTED_LIST_SUCCEEDED', result: data.message }
+export const requestListsSuccess = (lists) => {
+  return { type: 'REQUEST_LISTS_SUCCESS', payload: lists }
 };
 
-export const requestListError = () => {
-  return { type: 'REQUESTED_LIST_FAILED' }
+export const requestListsError = () => {
+  return { type: 'REQUEST_LISTS_FAILED' }
 };
 
-export const fetchList = () => {
-  return { type: 'FETCHED_LIST' }
+export const fetchLists = () => {
+  return { type: 'FETCH_LISTS' }
 };
 
 export const addList = (list) => {
-  return (dispatch, getState, { getFirebase }) => {
-     const firebase = getFirebase();
-     firebase.push('lists', list)
-     .then(() => {
-      dispatch({ type: 'ADD_LIST', list }) 
-     })
-     .catch((err) => {
-       dispatch({ type: 'ADD_LIST_ERROR', err})
-     })
-  }
+  console.log(list.list)
+  return { type: 'ADD_LIST', payload: list.list }
 }
+
+export const addListSuccess = (data) => {
+  return { type: 'ADD_LIST_SUCCESS', data }
+};
+
+export const addListError = () => {
+  return { type: 'REQUESTED_LIST_FAILED' }
+};
+
+export const addListAsync = (list) => {
+  return { type: 'ADD_LIST_ASYNC', list }
+};
 
 export const removeList = (path) => {
   return (dispatch, getState, {getFirebase}) => {

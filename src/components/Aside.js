@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Pulse } from 'react-preloading-component';
-import { addList, removeList } from '../store/actions/listActions';
+import { addList, removeList, addListAsync } from '../store/actions/listActions';
 
 class Aside extends React.Component {
   constructor(props) {
@@ -28,6 +28,10 @@ class Aside extends React.Component {
 
   addList() {
     this.props.addList(this.state.newList);
+  }
+
+  addListAsync() {
+    this.props.addListAsync(this.state.newList);
   }
 
   deleteList(path) {
@@ -65,6 +69,8 @@ class Aside extends React.Component {
           : null}
           <button disabled={!this.state.newList.listName} onClick={() => this.addList()} 
             className="btn btn-primary mt-4">Add List</button>
+          <button disabled={!this.state.newList.listName} onClick={() => this.addListAsync()} 
+            className="btn btn-primary mt-4">addListAsync</button>
         </div>
       </aside>
     )
@@ -84,7 +90,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addList: (list) => dispatch(addList(list)),
-    removeList: (path) => dispatch(removeList(path))
+    removeList: (path) => dispatch(removeList(path)),
+    addListAsync: (list) => dispatch(addListAsync(list))
   }
 }
 

@@ -1,37 +1,45 @@
-import { delay } from 'redux-saga';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, take, put, takeEvery } from 'redux-saga/effects';
 import { getFirebase } from 'react-redux-firebase';
-import { requestList, requestListSuccess, requestListError } from '../store/actions/listActions';
+import { requestLists, requestListsSuccess, requestListsError, addList, addListSuccess, addListError } from '../store/actions/listActions';
+import { databaseRef } from "../config/fbConfig";
 
-function* watchFetchList() {
-  yield takeEvery('FETCHED_LIST', fetchListAsync);
+function* watchAddList() {
+  yield takeEvery('ADD_LIST_ASYNC', addListAsync);
 }
 
-function* fetchListAsync() {
+function* addListAsync(list) {
+  console.log(list)
   try {
-    yield put(requestList());
-    const data = yield call(() => {
-      return getFirebase('lists')
-              .then(res => res.json())
-      }
-    );
-    yield put(requestListSuccess(data));
+    // yield put(addList(list));
+    const firebase = getFirebase();
+    firebase.push('lists', list.list)
+    yield getFirebase().ref()
+    // yield put(addListSuccess());
   } catch (error) {
-    yield put(requestListError());
+    yield put(addListError(error));
   }
 }
 
-export function* helloSaga() {
+function* watchFetchLists() {
+  yield takeEvery('FETCH_LISTS', fetchListsAsync);
+}
+
+function* fetchListsAsync() {
   try {
-    console.log('Hello Saga!')
-  } catch(err) {
-    console.log('Error in saga!', err)
-  }  
+    yield put(requestLists());
+    const lists = yield databaseRef.once('value').then(
+      snap => snap.val()
+    )
+    console.log('inside saga', lists)
+    yield put(requestListsSuccess(lists));
+  } catch (error) {
+    yield put(requestListsError());
+  }
 }
 
 export default function* rootSaga() {
-  yield [
-    helloSaga(),
-    watchFetchList()
-  ]
+  yield all([
+    watchAddList(),
+    watchFetchLists()
+  ])
 }

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { addTodo, removeTodo } from '../store/actions/itemActions';
-import { fetchList } from '../store/actions/listActions';
 
 class Main extends React.Component {
   constructor(props) {
@@ -15,11 +14,6 @@ class Main extends React.Component {
       listName: ''
     }
     this.handleClick = this.handleClick.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.fetchList();
-    console.log(this.props.result);
   }
 
   // onChangeName() {
@@ -158,9 +152,7 @@ Main.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     addTodo: (todo, path) => dispatch(addTodo(todo, path)),
-    removeTodo: (id, path) => dispatch(removeTodo(id, path)),
-    fetchList: (path) => dispatch(fetchList(path)),
-
+    removeTodo: (id, path) => dispatch(removeTodo(id, path))
   }
 }
 

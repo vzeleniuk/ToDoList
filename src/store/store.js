@@ -6,7 +6,9 @@ import rootReducer from './reducers/rootReducer'
 import fbConfigApp from '../config/fbConfig';
 import rootSaga from '../sagas/sagas';
 
-const initialState = {}
+const initialState = {
+  
+}
 const sagaMiddleware = createSagaMiddleware();
 export default createStore(
   rootReducer, 

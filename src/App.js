@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Header } from './components/Header';
 import Root from './components/Root';
-import { User } from './components/User';
+import User from './components/User';
 
 const App = () => (
   <Router>

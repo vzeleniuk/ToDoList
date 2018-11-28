@@ -1,4 +1,3 @@
-import Rebase from 're-base';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/storage';
@@ -12,8 +11,8 @@ const fbConfig = {
   messagingSenderId: "416103293547"
 };
   const fbConfigApp = firebase.initializeApp(fbConfig);
+  const databaseRef = firebase.database().ref();
   export const db = fbConfigApp.database();
-  const base = Rebase.createClass(db);
 
-export { base };
+export { databaseRef };
 export default fbConfigApp;

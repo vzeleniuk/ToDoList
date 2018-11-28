@@ -23,26 +23,8 @@ class Root extends React.Component {
     })
   }
 
-  getLists() {
-    return new Promise((resolve, reject) => {
-      if (this.props.lists) {
-        resolve(
-          this.props.lists
-        )
-      } else {
-          const reason = new Error('On maitenance');
-          reject(reason);
-        }
-    })
-  }
-
-  componentDidMount() {
-    this.getLists()
-    .then(this.setState({loading: false}))
-    .catch(error => error);
-  }
-
   render() {
+    console.log(this.props.lists)
     return(
       <div className="container">
         <div className="row">
@@ -70,11 +52,11 @@ Root.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    lists: state.firebase.ordered.lists
+    // lists: state.firebase.ordered.lists
   }
 }
 
 export default compose(
   connect(mapStateToProps),
-  firebaseConnect(['lists'])
+  // firebaseConnect(['lists'])
 )(Root)
