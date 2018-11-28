@@ -1,3 +1,19 @@
+export const requestList = () => {
+  return { type: 'REQUESTED_LIST' }
+};
+
+export const requestListSuccess = (data) => {
+  return { type: 'REQUESTED_LIST_SUCCEEDED', result: data.message }
+};
+
+export const requestListError = () => {
+  return { type: 'REQUESTED_LIST_FAILED' }
+};
+
+export const fetchList = () => {
+  return { type: 'FETCHED_LIST' }
+};
+
 export const addList = (list) => {
   return (dispatch, getState, { getFirebase }) => {
      const firebase = getFirebase();

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { firebaseConnect } from 'react-redux-firebase';
 import { addTodo, removeTodo } from '../store/actions/itemActions';
+import { fetchList } from '../store/actions/listActions';
 
 class Main extends React.Component {
   constructor(props) {
@@ -15,6 +15,11 @@ class Main extends React.Component {
       listName: ''
     }
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.fetchList();
+    console.log(this.props.result);
   }
 
   // onChangeName() {
@@ -150,20 +155,15 @@ Main.propTypes = {
   list: PropTypes.object
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lists: state.firebase.ordered.lists
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     addTodo: (todo, path) => dispatch(addTodo(todo, path)),
-    removeTodo: (id, path) => dispatch(removeTodo(id, path))
+    removeTodo: (id, path) => dispatch(removeTodo(id, path)),
+    fetchList: (path) => dispatch(fetchList(path)),
+
   }
 }
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  firebaseConnect(['lists'])
-)(Main)
+  connect(null, mapDispatchToProps)
+  )(Main)

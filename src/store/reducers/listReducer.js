@@ -1,5 +1,7 @@
 const initState = {
-  
+  result: '',
+  loading: false,
+  error: false,
 };
 
 const listReducer = (state = initState, action) => {
@@ -16,6 +18,24 @@ const listReducer = (state = initState, action) => {
     case 'REMOVE_LIST_ERROR':
       console.log('create list error', action.err);
       return state;
+    case 'REQUESTED_LIST':
+      return {
+        result: '',
+        loading: true,
+        error: false,
+      };
+    case 'REQUESTED_LIST_SUCCEEDED':
+      return {
+        result: action.list,
+        loading: false,
+        error: false,
+      };
+    case 'REQUESTED_LIST_FAILED':
+      return {
+        result: '',
+        loading: false,
+        error: true,
+      };
     default: 
       return state;
   }
