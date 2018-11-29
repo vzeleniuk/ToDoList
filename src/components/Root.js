@@ -1,62 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { firebaseConnect } from 'react-redux-firebase';
-import { compose } from 'redux';
+import { fetchLists } from '../store/actions/listActions';
 
 import Main from './Main';
 import Aside from './Aside';
 import { Pulse } from 'react-preloading-component';
 
 class Root extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      id: '',
-      loading: true
-    }
-  }
-
-  fromAside(params) {
-    this.setState({
-      list: params
-    })
-  }
 
   render() {
-    console.log(this.props.lists)
+    console.log('is root re rendering?', this.props.lists.lists)
     return(
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-4">
-            {this.props.lists 
-              ? <Aside callback={(params) => this.fromAside(params)} lists={this.props.lists}/>
+            {this.props.lists.lists 
+              ? <Aside lists={this.props.lists.lists} added={this.props.lists.added}/>
               : <Pulse />
-            }
-            
+            } 
           </div>
           <div className="col-md-8 col-8">
-            <Main list={this.state.list}/>
+            <Main/>
           </div>
         </div>
       </div>
     )
   }
-}
 
-Root.propTypes = {
-  callback: PropTypes.func,
-  lists: PropTypes.array,
-  list: PropTypes.object
+  componentDidMount() {
+    this.props.dispatch(fetchLists())
+  }
+
 }
 
 const mapStateToProps = (state) => {
-  return {
-    // lists: state.firebase.ordered.lists
+  return { 
+    lists: state.list.lists,
+    added: state.list.added
   }
 }
 
-export default compose(
-  connect(mapStateToProps),
-  // firebaseConnect(['lists'])
-)(Root)
+export default connect(mapStateToProps)(Root)

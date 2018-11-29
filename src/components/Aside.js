@@ -1,18 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Pulse } from 'react-preloading-component';
-// import { addList, removeList, addListAsync } from '../store/actions/listActions';
+import { chooseList, addListAsync, removeList } from '../store/actions/listActions'
 
 class Aside extends React.Component {
   constructor(props) {
     super(props);
-    this.addList = this.addList.bind(this);
     this.state = {
-      loading: true,
       newList: {}
     }
   }
+
+  // shouldComponentUpdate(nextProps) {
+  //   console.log('Should?', this.props, nextProps)
+  //   if (this.props === nextProps) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   onNewListName(e) {
     const id = Date.now();
@@ -26,33 +31,29 @@ class Aside extends React.Component {
     })
   }
 
-  addList() {
-    this.props.addList(this.state.newList);
-  }
-
-  addListAsync() {
-    this.props.addListAsync(this.state.newList);
-  }
-
-  deleteList(path) {
-    this.props.removeList(path);
-  }
-
-  getListTodos(item) {
-    this.props.callback(item);
+  objToArr() {
+    const objToArr = [];
+    if (this.props.lists) {
+      Object.keys(this.props.lists).forEach(key => {
+        objToArr.push(this.props.lists[key])
+      })
+    }
+    return objToArr;
   }
 
   render() {
+    console.log('aside?', this.props.lists)
+    const newArr = this.objToArr();
     return(
       <aside>
         <div className="mt-6">
           <h4 className="mt-4 mb-4 text-center">My TODOs</h4>
-          {this.props.lists.length > 1 
+          {this.props.lists 
             ? <div className="list-group">
-                {this.props.lists && this.props.lists.map((item) => (
-                  <p onClick={() => this.getListTodos(item)} className="list-group-item list-group-item-secondary" key={item.key}>{item.value.listName}
+                {this.props.lists && newArr.map((item) => (
+                  <p onClick={() => this.props.dispatch(chooseList(item))} className="list-group-item list-group-item-secondary" key={item.id}>{item.listName}
                   <button type="button" className="btn btn-danger btn-sm btn-del" 
-                          onClick={() => this.deleteList(item.key)}
+                          onClick={() => this.props.dispatch(removeList(item.key))}
                           >x</button>
                   </p>
                 ))}
@@ -63,13 +64,11 @@ class Aside extends React.Component {
         </div>
         
         <div className="row mt-4 mb-4 text-center">
-        {this.props.lists.length > 1 
+        {this.props.lists 
           ? <input className="form-control" type="text" placeholder="Enter New ToDo List Title" 
             onChange={(event) => this.onNewListName(event)}/>
           : null}
-          <button disabled={!this.state.newList.listName} onClick={() => this.addList()} 
-            className="btn btn-primary mt-4">Add List</button>
-          <button disabled={!this.state.newList.listName} onClick={() => this.addListAsync()} 
+          <button disabled={!this.state.newList.listName} onClick={() => this.props.dispatch(addListAsync(this.state.newList))} 
             className="btn btn-primary mt-4">addListAsync</button>
         </div>
       </aside>
@@ -77,22 +76,4 @@ class Aside extends React.Component {
   }
 }
 
-Aside.propTypes = {
-  callback: PropTypes.func
-}
-
-const mapStateToProps = (state) => {
-  return {
-    lists: state.firebase.ordered.lists,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    // addList: (list) => dispatch(addList(list)),
-    // removeList: (path) => dispatch(removeList(path)),
-    // addListAsync: (list) => dispatch(addListAsync(list))
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Aside)
+export default connect()(Aside)

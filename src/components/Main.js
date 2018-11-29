@@ -60,9 +60,9 @@ class Main extends React.Component {
 
   objToArr() {
     const objToArr = [];
-    if (this.props.list && this.props.list.value.items) {
-      Object.keys(this.props.list.value.items).forEach(key => {
-        objToArr.push(this.props.list.value.items[key])
+    if (this.props.list && this.props.list.items) {
+      Object.keys(this.props.list.items).forEach(key => {
+        objToArr.push(this.props.list.items[key])
       })
     }
     return objToArr;
@@ -85,13 +85,13 @@ class Main extends React.Component {
           ? <div className="col-12 col-md-12">
               <div className="row">
                 <div className="col-12 col-md-12">
-                  <h2 className="cover-heading mt-4 mb-4">{this.props.list.value.listName}</h2>
-                  <p className="h5">Created: {this.dateToFormat(this.props.list.value.dateCreated)}</p>
+                  <h2 className="cover-heading mt-4 mb-4">{this.props.list.listName}</h2>
+                  <p className="h5">Created: {this.dateToFormat(this.props.list.dateCreated)}</p>
                 </div>
               </div>
               <div className="row justify-content-md-center">
                 <div className="col-12 col-md-8 text-left">
-                    {this.props.list.value.items && newArr
+                    {this.props.list.items && newArr
                       ? <ul className="checkbox">
                         {newArr.map((item, i) => (
                           <li key={i}>
@@ -113,7 +113,7 @@ class Main extends React.Component {
           ? <div className="row mt-4">
               <form>
                 <div className="form-group">
-                  {this.props.list.value.items
+                  {this.props.list.items
                     ? <label htmlFor="new-todo">Add more ToDo's</label>
                     : <label htmlFor="new-todo">Add ToDo</label>
                   }
@@ -149,6 +149,13 @@ Main.propTypes = {
   list: PropTypes.object
 }
 
+const mapStateToProps = (state) => {
+  return {
+    list: state.list.list
+    // lists: state.firebase.ordered.lists,
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addTodo: (todo, path) => dispatch(addTodo(todo, path)),
@@ -157,5 +164,5 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default compose(
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
   )(Main)
