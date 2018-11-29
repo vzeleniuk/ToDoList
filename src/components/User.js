@@ -6,15 +6,18 @@ class User extends React.Component {
   onGreet() {
     alert('Hello, User!');
   }
-
+  
   componentDidMount() {
     this.props.dispatch(fetchLists())
-    console.log('this.props mount', this.props)
+    console.log('this.props setimeout in mount', this.props, this.props.lists, this.state)
+  }
 
+  componentWillUnmount() {
+    console.log('this.props unmount', this.props, this.props.lists)
   }
 
   render() {
-    console.log('this.props', this.props.lists)
+    console.log('render', this.props, this.props.lists)
     return(
       <div className="container-main">
         <div className="row">
@@ -22,13 +25,13 @@ class User extends React.Component {
         </div>
         <div className="row">
           <button onClick={() => this.onGreet()} className="btn btn-primary">Greet</button>
-          {/* <button onClick={() => this.props.dispatch(fetchLists())} className="btn btn-primary">Greet</button> */}
-        {/* <p>
-          {this.props 
-          ? this.props
+          <button onClick={() => this.props.dispatch(fetchLists())} className="btn btn-primary">fetchLists</button>
+        <p>
+          {this.props.list 
+          ? this.props.list.lists[0].id
           : null
           }
-        </p> */}
+        </p>
         </div>
       </div>
     )
@@ -36,7 +39,8 @@ class User extends React.Component {
 }
 
 function mapStateToProps(state) {
-  return { lists: state.lists }
+  console.log('map state to props', state);
+  return { lists: state.list.lists }
 }
 
 export default connect(mapStateToProps)(User)

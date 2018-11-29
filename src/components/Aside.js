@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Pulse } from 'react-preloading-component';
-import { addList, removeList, addListAsync } from '../store/actions/listActions';
+// import { addList, removeList, addListAsync } from '../store/actions/listActions';
 
 class Aside extends React.Component {
   constructor(props) {
@@ -89,9 +89,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addList: (list) => dispatch(addList(list)),
-    removeList: (path) => dispatch(removeList(path)),
-    addListAsync: (list) => dispatch(addListAsync(list))
+    // addList: (list) => dispatch(addList(list)),
+    // removeList: (path) => dispatch(removeList(path)),
+    // addListAsync: (list) => dispatch(addListAsync(list))
   }
 }
 
