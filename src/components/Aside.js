@@ -11,14 +11,6 @@ class Aside extends React.Component {
     }
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   console.log('Should?', this.props, nextProps)
-  //   if (this.props === nextProps) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   onNewListName(e) {
     const id = Date.now();
     this.setState({
@@ -31,29 +23,30 @@ class Aside extends React.Component {
     })
   }
 
-  objToArr() {
-    const objToArr = [];
-    if (this.props.lists) {
-      Object.keys(this.props.lists).forEach(key => {
-        objToArr.push(this.props.lists[key])
-      })
-    }
-    return objToArr;
+  addList() {
+    this.props.dispatch(addListAsync(this.state.newList));
+    this.setState({
+      newList: {
+        id: '',
+        listName: '',
+        dateCreated: '',
+        items: []
+      }
+    })
   }
 
   render() {
-    console.log('aside?', this.props.lists)
-    const newArr = this.objToArr();
+    console.log('aside?', this.props.lists, this.state)
     return(
       <aside>
         <div className="mt-6">
           <h4 className="mt-4 mb-4 text-center">My TODOs</h4>
           {this.props.lists 
             ? <div className="list-group">
-                {this.props.lists && newArr.map((item) => (
-                  <p onClick={() => this.props.dispatch(chooseList(item))} className="list-group-item list-group-item-secondary" key={item.id}>{item.listName}
-                  <button type="button" className="btn btn-danger btn-sm btn-del" 
-                          onClick={() => this.props.dispatch(removeList(item.key))}
+                {Object.entries(this.props.lists).map(([key, value]) => (
+                  <p onClick={() => this.props.dispatch(chooseList(value))} className="list-group-item list-group-item-secondary" key={value.id}>{value.listName}
+                  <button type="button" className="btn btn-danger btn-sm btn-del"
+                          onClick={() => this.props.dispatch(removeList(key))}
                           >x</button>
                   </p>
                 ))}
@@ -68,7 +61,7 @@ class Aside extends React.Component {
           ? <input className="form-control" type="text" placeholder="Enter New ToDo List Title" 
             onChange={(event) => this.onNewListName(event)}/>
           : null}
-          <button disabled={!this.state.newList.listName} onClick={() => this.props.dispatch(addListAsync(this.state.newList))} 
+          <button disabled={!this.state.newList.listName} onClick={() => this.addList()} 
             className="btn btn-primary mt-4">addListAsync</button>
         </div>
       </aside>

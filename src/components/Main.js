@@ -151,7 +151,7 @@ Main.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    list: state.list.list
+    list: state.list.selectedList
     // lists: state.firebase.ordered.lists,
   }
 }

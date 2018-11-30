@@ -3,18 +3,13 @@
 const initState = {
   lists: {},
   loading: false,
-  error: false,
-  added: false
+  error: false
 };
 
 const fetchLists = (state = initState, action) => {
   switch (action.type) {
     case 'REQUEST_LISTS':
-      return {
-        lists: {},
-        loading: false,
-        error: false,
-      };
+      return state;
     case 'REQUEST_LISTS_SUCCESS':
       return {
         ...state,
@@ -22,14 +17,13 @@ const fetchLists = (state = initState, action) => {
       };
     case 'REQUEST_LISTS_FAILED':
       return {
-        lists: '',
-        loading: false,
-        error: true,
+        ...state,
+        error: true
       };
     case 'CHOOSE_LIST':
       return {
         ...state,
-        list: action.payload
+        selectedList: action.payload
       };
     case 'ADD_LIST_SUCCESS':
     console.log('added list success', action.payload.addedList, action.payload.addedListKey);
@@ -41,14 +35,25 @@ const fetchLists = (state = initState, action) => {
             ...state.lists.lists,
             [action.payload.addedListKey]: action.payload.addedList
             }
-          },
-        added: true
-        // OR?action.payload ? true : false
+          }
       };
     case 'ADD_LIST_FAILED':
       return {
         ...state,
-        added: false,
+        error: true
+      };
+    case 'REMOVE_LIST':
+      return state;
+    case 'REMOVE_LIST_SUCCESS':
+      const key = action.payload;
+      delete state.lists.lists[key];
+      return {
+        ...state,
+        lists: {...state.lists}
+      };
+    case 'REMOVE_LIST_FAILED':
+      return {
+        ...state,
         error: true
       };
     default: 
@@ -57,18 +62,8 @@ const fetchLists = (state = initState, action) => {
 }
 
 // const operateList = (state = initState, action) => {
-//   // switch (action.type) {
-//     // case 'REMOVE_LIST':
-//     //   console.log('removed list', action.path);
-//     //   return {
-//     //     lists: action.path,
-//     //     loading: false,
-//     //     error: false,
-//     //   };
+//    switch (action.type) {
 
-//     // case 'REMOVE_LIST_ERROR':
-//     //   console.log('create list error', action.err);
-//     //   return state;
 //     default: 
 //       return state;
 //   }

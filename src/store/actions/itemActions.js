@@ -11,6 +11,18 @@ export const addTodo = (todo, path) => {
   }
 }
 
+export const addTodoAsync = (newTodo) => {
+  return { type: 'ADD_TODO_ASYNC', payload: newTodo }
+};
+
+export const addTodoSuccess = (addedTodo) => {
+  return { type: 'ADD_TODO_SUCCESS', payload: {addedTodo} }
+};
+
+export const addTodoError = () => {
+  return { type: 'ADD_TODO_FAILED' }
+};
+
 export const removeTodo = (id, path) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();

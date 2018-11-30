@@ -27,18 +27,17 @@ export const addListSuccess = (addedList, addedListKey) => {
 };
 
 export const addListError = () => {
-  return { type: 'REQUESTED_LIST_FAILED' }
+  return { type: 'ADD_LIST_FAILED' }
 };
 
-export const removeList = (path) => {
-  return (dispatch, getState, {getFirebase}) => {
-    const firebase = getFirebase();
-    firebase.remove(`lists/${path}`)
-    .then(() => {
-      dispatch({ type: 'REMOVE_LIST', path})
-    })
-    .catch((err) => {
-      dispatch({ type: 'REMOVE_LIST_ERROR', err})
-    })
-  }
+export const removeList = (key) => {
+  return { type: 'REMOVE_LIST', payload: key }
+}
+
+export const removeListSuccess = (key) => {
+  return { type: 'REMOVE_LIST_SUCCESS', payload: key }
+}
+
+export const removeListError = (error) => {
+  return { type: 'REMOVE_LIST_ERROR', payload: error }
 }

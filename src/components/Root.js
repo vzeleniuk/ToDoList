@@ -28,15 +28,24 @@ class Root extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchLists())
+    this.props.dispatch(fetchLists());
+    // this.props.store.subscribe(() => {
+    //   this.setState({reduxState: this.props.store.getState()});
+    // })
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const differentLists = this.props.lists.lists !== nextProps.lists.lists;
+    console.log('shoul update?', differentLists)
+    return differentLists;
   }
 
 }
 
 const mapStateToProps = (state) => {
+  console.log('map state to props', state)
   return { 
-    lists: state.list.lists,
-    added: state.list.added
+    lists: state.list.lists
   }
 }
 
