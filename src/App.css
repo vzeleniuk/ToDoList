@@ -65,9 +65,4 @@ input:checked + label {
 
 .btn-del {
   float: right;
-  opacity: 0.2;
-}
-
-.btn-del:hover {
-  opacity: 1;
 }

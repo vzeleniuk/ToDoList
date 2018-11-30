@@ -40,9 +40,11 @@ function* watchRemoveList() {
 }
 
 function* removeList(key) {
-  console.log('remone saga', key.payload);
+  console.log('remove saga', key.payload);
   try {
-    yield fbConfigApp.database().ref('lists').child(key.payload).remove();
+    yield fbConfigApp.database().ref('lists')
+      .child(key.payload)
+      .remove();
     yield put(removeListSuccess(key.payload));
   } catch (error) {
     yield put(removeListError(error))

@@ -7,8 +7,14 @@ class Aside extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newList: {}
+      newList: {
+        id: '',
+        listName: '',
+        dateCreated: '',
+        items: []
+      }
     }
+    this.onNewListName = this.onNewListName.bind(this);
   }
 
   onNewListName(e) {
@@ -35,8 +41,14 @@ class Aside extends React.Component {
     })
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   const difference = Object.keys(this.props.lists).length !== Object.keys(nextProps.lists).length;
+  //   console.log('Should Aside update?', Object.keys(this.props.lists).length, Object.keys(nextProps.lists).length, difference);
+  //   return difference;
+  // }
+
   render() {
-    console.log('aside?', this.props.lists, this.state)
+    console.log('aside render', this.props.lists, this.state)
     return(
       <aside>
         <div className="mt-6">
@@ -45,9 +57,8 @@ class Aside extends React.Component {
             ? <div className="list-group">
                 {Object.entries(this.props.lists).map(([key, value]) => (
                   <p onClick={() => this.props.dispatch(chooseList(value))} className="list-group-item list-group-item-secondary" key={value.id}>{value.listName}
-                  <button type="button" className="btn btn-danger btn-sm btn-del"
-                          onClick={() => this.props.dispatch(removeList(key))}
-                          >x</button>
+                    <button type="button" className="btn btn-danger btn-sm btn-del"
+                            onClick={() => this.props.dispatch(removeList(key))}>x</button>
                   </p>
                 ))}
               </div>
@@ -58,7 +69,7 @@ class Aside extends React.Component {
         
         <div className="row mt-4 mb-4 text-center">
         {this.props.lists 
-          ? <input className="form-control" type="text" placeholder="Enter New ToDo List Title" 
+          ? <input className="form-control" type="text" value={this.state.newList.listName} placeholder="Enter New ToDo List Title"
             onChange={(event) => this.onNewListName(event)}/>
           : null}
           <button disabled={!this.state.newList.listName} onClick={() => this.addList()} 
@@ -68,5 +79,22 @@ class Aside extends React.Component {
     )
   }
 }
+
+// class MyInput extends Component {
+//   constructor() {
+//     super();
+//     this.state = {value: ""};
+//   }
+
+//   update = (e) => {
+//     this.setState({value: e.target.value});
+//   }
+
+//   render() {
+//     return (
+//       <input onChange={this.update} value={this.state.value} />
+//     );
+//   }
+// }
 
 export default connect()(Aside)
