@@ -23,9 +23,6 @@ class Main extends React.Component {
     console.log('Main Did Mount', this.state.itemsFormProps)
   }
 
-  // onChangeName() {
-  // }
-
   handleNewTodo(e) {
     this.setState({
       newTodo: {
@@ -61,7 +58,7 @@ class Main extends React.Component {
   deleteTodo(i) {
     const keyTodo = Object.keys(this.props.list[1].items);
     this.props.dispatch(removeTodoAsync(this.props.list[0], keyTodo[i]));
-    console.log('delete todo in MAin', this.props.list[0], keyTodo[i])
+    console.log('delete todo in Main', this.props.list[0], keyTodo[i])
   }
 
   objToArr() {
@@ -124,8 +121,7 @@ class Main extends React.Component {
                     ? <label htmlFor="new-todo">Add more ToDo's</label>
                     : <label htmlFor="new-todo">Add ToDo</label>
                   }
-                  <input className="form-control"
-                    id="new-todo"
+                  <input className="form-control" id="new-todo" placeholder="What needs to be done?"
                     onChange={(e) => this.handleNewTodo(e)}
                     />
                   <button className="btn btn-primary" disabled={!this.state.newTodo.text} 
@@ -134,16 +130,6 @@ class Main extends React.Component {
               </form>
             </div>
           : null}
-     
-      {/* <div className="row mt-4 mb-4">
-        {this.props.list 
-          ? <input className="form-control" 
-            type="text" 
-            value={this.props.list.listName}
-            onChange={(event) => this.onNewListName(event)}/>
-          : null}
-          <button onClick={() => this.onChangeName()} className="btn btn-primary mt-4">Change List Name</button>
-        </div> */}
       </main>
     )
   }

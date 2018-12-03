@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<User /> User component should render as expected 1`] = `
+<div
+  className="container-main"
+>
+  <div
+    className="row"
+  >
+    <h1
+      className="cover-heading mt-4 mb-4"
+    >
+      User Name
+    </h1>
+  </div>
+  <div
+    className="row"
+  >
+    <button
+      className="btn btn-primary"
+      onClick={[Function]}
+    >
+      Greet
+    </button>
+  </div>
+</div>
+`;

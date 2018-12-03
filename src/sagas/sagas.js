@@ -1,6 +1,6 @@
 import { all, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { getFirebase } from 'react-redux-firebase';
-import { requestLists, requestListsSuccess, requestListsError, addListSuccess, addListError, removeListError, removeListSuccess } from '../store/actions/listActions';
+import { requestLists, requestListsSuccess, requestListsError, addListSuccess, addListError, removeListError } from '../store/actions/listActions';
 import { addTodoSuccess, addTodoError, removeTodoSuccess, removeTodoError } from '../store/actions/itemActions';
 import fbConfigApp, { databaseRef } from "../config/fbConfig";
 
@@ -13,6 +13,7 @@ function* fetchListsAsync() {
     yield put(requestLists());
     const lists = yield databaseRef.once('value').then(
       snap => snap.val())
+      console.log(lists)
     yield put(requestListsSuccess(lists));
   } catch (error) {
     yield put(requestListsError());
@@ -46,7 +47,7 @@ function* removeList(key) {
     yield fbConfigApp.database().ref('lists')
       .child(key.payload)
       .remove();
-    yield put(removeListSuccess(key.payload));
+    yield fetchListsAsync();
   } catch (error) {
     yield put(removeListError(error))
   }
@@ -59,11 +60,12 @@ function* watchAddTdo() {
 function* addTodoAsync(newTodo) {
   try {
     const newTodoRef = yield fbConfigApp.database().ref(`/lists/${newTodo.payload.key}/`)
-      .child('items').push(newTodo.payload.newTodo);
+      .child('items')
+      .push(newTodo.payload.newTodo);
     const addedTodo = yield fbConfigApp.database().ref(`/lists/${newTodo.payload.key}/items/${newTodoRef.key}`)
       .once('value')
       .then(snap => snap.val())
-  console.log('Todo added', newTodoRef.key, addedTodo)
+    
     yield put(addTodoSuccess(newTodo.payload.key, newTodoRef.key, addedTodo));
   } catch (error) {
     yield put(addTodoError(error));

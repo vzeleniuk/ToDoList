@@ -6,19 +6,19 @@ import Main from './Main';
 import Aside from './Aside';
 import { Pulse } from 'react-preloading-component';
 
-class Root extends React.Component {
+export class Root extends React.Component {
 
   componentDidMount() {
     this.props.dispatch(fetchLists());
   }
   
   render() {
-    console.log('root render', this.props.lists.lists)
+    console.log('root render', this.props.lists ? this.props.lists.lists : 'Firebase non available')
     return(
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-4">
-            {this.props.lists.lists 
+            {this.props.lists 
               ? <Aside lists={this.props.lists.lists}/>
               : <Pulse />
             }

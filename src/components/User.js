@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class User extends React.Component {
   onGreet() {
-    console.log('Hello, User!');
+    alert('Hello, User!');
   }
   
   render() {

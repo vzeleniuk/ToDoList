@@ -1,44 +1,47 @@
 import React from 'react';
-// import { describe, beforeEach, it, expect } from 'jest';
+import { expect } from 'jest';
 import { shallow, mount } from 'enzyme';
 // import toJson from 'enzyme-to-json';
-
-import Root from '../../src/components/Root';
-
-
+import { Root } from './Root';
 
 // describe('<Root />', () => {
-//     describe('render()', () => {
-//         test('renders the component', () => {
-//             const wrapper = shallow(<Root />);
-//             const component = wrapper.dive();
+//   it('renders 1 <Root /> component', () => {
+//     const store = createNormalReduxStore();
+//     store.dispatch(actions.fetchLists({ userId: 1, name: 'Kumar' }));
+//     const component = shallow(<Root />);
+//     expect(component).toHaveLength(1);
+//   })
+// })
 
-//             expect(toJson(component)).toMatchSnapshot();
-//         });
-//     });
-// });
-
-describe("Root", () => {
-    let props;
-    let mountedRoot;
-    const root = () => {
-      if (!mountedRoot) {
-        mountedRoot = mount(
-          <Root {...props} />
-        );
-      }
-      return mountedRoot;
-    }
-  
-    beforeEach(() => {
-      props = {
-        lists: undefined,
-      };
-      mountedRoot = undefined;
-    });
-    
-    it("always renders a div", () => {
-        const divs = root().find("div");
-        expect(divs.length).toBeGreaterThan(0);
-      });
+describe('<Root />', () => {
+  test('Root component should render as expected', () => {
+    const component = shallow(<Root />);
+    const tree = toJson(component);
+    expect(tree).toMatchSnapshot();
   });
+});
+
+// describe("Root", () => {
+//     let props;
+//     let mountedRoot;
+//     const root = () => {
+//       if (!mountedRoot) {
+//         mountedRoot = mount(
+//           <Root {...props} />
+//         );
+//       }
+//       return mountedRoot;
+//     }
+  
+//     beforeEach(() => {
+//       props = {
+//         lists: undefined,
+//       };
+//       mountedRoot = undefined;
+//     });
+    
+//     it("always renders a div", () => {
+//         const divs = root().find("div");
+//         expect(divs.length).toBeGreaterThan(0);
+//       });
+//   });

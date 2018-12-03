@@ -34,10 +34,6 @@ export const removeList = (key) => {
   return { type: 'REMOVE_LIST', payload: key }
 }
 
-export const removeListSuccess = (key) => {
-  return { type: 'REMOVE_LIST_SUCCESS', payload: key }
-}
-
 export const removeListError = (error) => {
   return { type: 'REMOVE_LIST_ERROR', payload: error }
 }

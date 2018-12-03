@@ -43,15 +43,6 @@ const fetchLists = (state = initState, action) => {
         error: true
       };
 
-    case 'REMOVE_LIST_SUCCESS':
-      console.log('remove list request', Object.keys(state.lists.lists).length)
-      Reflect.deleteProperty(state.lists.lists, action.payload);
-      console.log('remove list success', Object.keys(state.lists.lists).length)
-      return {
-        ...state,
-        lists: {...state.lists},
-        selectedList: null
-      };
     case 'REMOVE_LIST_FAILED':
       return {
         ...state,

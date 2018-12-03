@@ -32,9 +32,10 @@ class Aside extends React.Component {
 
   sortLists() {
     const map = new Map(Object.entries(this.props.lists));
-    map[Symbol.iterator] = function* () {
+    map[Symbol.iterator] = function* toMap() {
       yield* [...this.entries()].sort((a, b) => new Date(a[1].dateCreated) - new Date(b[1].dateCreated));
     }
+
     return [...map];
   }
 
@@ -63,7 +64,10 @@ class Aside extends React.Component {
                 {this.sortLists().map(list => (
                   <li className={`list-group-item list-group-item-action ${this.state.activeList === list[0] ? 'active' : null}`}
                     key={list[0]}>
-                    <p className='mb-0' onClick={() => {this.props.dispatch(chooseList(list[0], list[1])); this.setActive(list[0])}}>{list[1].listName}</p>
+                    <p className="mb-0" onClick={() => { 
+                        this.props.dispatch(chooseList(list[0], list[1])); 
+                        this.setActive(list[0]) 
+                      }}>{list[1].listName}</p>
                     <button type="button" className="btn btn-danger btn-sm btn-del btn-list"
                             onClick={() => this.props.dispatch(removeList(list[0]))}>x</button>
                   </li>
@@ -76,8 +80,8 @@ class Aside extends React.Component {
         
         <div className="mt-4 mb-4 text-center">
         {this.props.lists 
-          ? <input className="form-control col-12" type="text" value={this.state.newList.listName} placeholder="Enter New ToDo List Title"
-            onChange={(event) => this.onNewListName(event)}/>
+          ? <input className="form-control col-12" type="text" value={this.state.newList.listName} 
+            placeholder="Enter New ToDo List Title" onChange={(event) => this.onNewListName(event)}/>
           : null}
           <button disabled={!this.state.newList.listName} onClick={() => this.addList()} 
             className="btn btn-primary mt-4">Add List</button>
