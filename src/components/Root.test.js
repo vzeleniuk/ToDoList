@@ -1,10 +1,11 @@
 import React from 'react';
-import { describe, beforeEach, it, expect } from 'jest';
+// import { describe, beforeEach, it, expect } from 'jest';
 import { shallow, mount } from 'enzyme';
 // import toJson from 'enzyme-to-json';
-import configureStore from 'redux-mock-store';
 
 import Root from '../../src/components/Root';
+
+
 
 // describe('<Root />', () => {
 //     describe('render()', () => {

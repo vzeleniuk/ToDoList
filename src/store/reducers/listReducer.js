@@ -23,7 +23,7 @@ const fetchLists = (state = initState, action) => {
     case 'CHOOSE_LIST':
       return {
         ...state,
-        selectedList: action.payload
+        selectedList: [action.payload.key, action.payload.list]
       };
     case 'ADD_LIST_SUCCESS':
     console.log('added list success', action.payload.addedList, action.payload.addedListKey);

@@ -1,5 +1,3 @@
-import test from 'tape';
-
 import { put } from 'redux-saga/effects';
 import fetchListsAsync from './sagas';
 import { databaseRef } from "../config/fbConfig";

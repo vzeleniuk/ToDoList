@@ -14,8 +14,8 @@ export const requestListsError = () => {
   return { type: 'REQUEST_LISTS_FAILED' }
 };
 
-export const chooseList = (list) => {
-  return { type: 'CHOOSE_LIST', payload: list }
+export const chooseList = (key, list) => {
+  return { type: 'CHOOSE_LIST', payload: {key, list} }
 };
 
 export const addListAsync = (newList) => {

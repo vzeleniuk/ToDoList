@@ -1,40 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { addTodo, removeTodo } from '../store/actions/itemActions';
+import { addTodoAsync, removeTodoAsync } from '../store/actions/itemActions';
 
 class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       newTodo: {},
-      condition: false,
-      id: '',
-      listName: ''
+      itemsFormProps: [],
+      condition: false
     }
-    this.handleClick = this.handleClick.bind(this);
+    this.handleChecked = this.handleChecked.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.list) {
+      this.setState({
+        itemsFormProps: nextProps.list[1].items,
+      })
+    }
+    console.log('Main Did Mount', this.state.itemsFormProps)
   }
 
   // onChangeName() {
   // }
 
   handleNewTodo(e) {
-    const id = Date.now();
     this.setState({
       newTodo: {
-        id,
+        id: Date.now(),
         text: e.target.value,
         checked: false
       }
     });
   }
 
-  addTodo() {
-    this.props.addTodo(this.state.newTodo, this.props.list.key);
+  addTodoAsync() {
+    this.props.dispatch(addTodoAsync(this.state.newTodo, this.props.list[0]));
+    this.setState({
+      newTodo: { id: '', text: '', checked: false }
+    })
   }
 
-  handleClick() {
+  handleChecked() {
     this.setState({
       condition: !this.state.condition
     })
@@ -46,23 +55,20 @@ class Main extends React.Component {
       newArr[i].checked = false;
     } else {
       newArr[i].checked = true;
-      // this.setState({
-      //   id: this.props.list.value.items[i].id
-      // })
-      // console.log('todoCompleted', this.state.id)
     }
   }
 
   deleteTodo(i) {
-    const keyTodo = Object.keys(this.props.list.value.items);
-    this.props.removeTodo(keyTodo[i], this.props.list.key);
+    const keyTodo = Object.keys(this.props.list[1].items);
+    this.props.dispatch(removeTodoAsync(this.props.list[0], keyTodo[i]));
+    console.log('delete todo in MAin', this.props.list[0], keyTodo[i])
   }
 
   objToArr() {
     const objToArr = [];
-    if (this.props.list && this.props.list.items) {
-      Object.keys(this.props.list.items).forEach(key => {
-        objToArr.push(this.props.list.items[key])
+    if (this.props.list && this.props.list[1].items) {
+      Object.keys(this.props.list[1].items).forEach(key => {
+        objToArr.push(this.props.list[1].items[key])
       })
     }
     return objToArr;
@@ -78,6 +84,7 @@ class Main extends React.Component {
   }
 
   render() {
+    console.log('MAIN', this.props, this.state.itemsFormProps);
     const newArr = this.objToArr();
     return(
       <main className="container-main">
@@ -85,26 +92,26 @@ class Main extends React.Component {
           ? <div className="col-12 col-md-12">
               <div className="row">
                 <div className="col-12 col-md-12">
-                  <h2 className="cover-heading mt-4 mb-4">{this.props.list.listName}</h2>
-                  <p className="h5">Created: {this.dateToFormat(this.props.list.dateCreated)}</p>
+                  <h2 className="cover-heading mt-4 mb-4">{this.props.list[1].listName}</h2>
+                  <p className="h5">Created: {this.dateToFormat(this.props.list[1].dateCreated)}</p>
                 </div>
               </div>
               <div className="row justify-content-md-center">
                 <div className="col-12 col-md-8 text-left">
-                    {this.props.list.items && newArr
+                    {this.props.list[1].items && newArr
                       ? <ul className="checkbox">
                         {newArr.map((item, i) => (
                           <li key={i}>
                               <input type="checkbox" id={item.id} onChange={() => this.todoCompleted(i)}
-                                      checked={item.checked} onClick={this.handleClick}/> 
+                                checked={item.checked} onClick={this.handleChecked}/> 
                               <label className="checkbox-label" htmlFor={item.id}> {item.text}</label>
-                            <button type="button" className="btn btn-danger btn-sm btn-del" 
+                            <button type="button" className="btn btn-danger btn-sm btn-del btn-todo" 
                             onClick={() => this.deleteTodo(i)}
                             >x</button>
                           </li>))}
                         </ul>
                       : <p className="mt-4 text-center">Start edding ToDo's:</p>
-                    } 
+                    }
                 </div>
               </div>
             </div>
@@ -113,7 +120,7 @@ class Main extends React.Component {
           ? <div className="row mt-4">
               <form>
                 <div className="form-group">
-                  {this.props.list.items
+                  {this.props.list[1].items
                     ? <label htmlFor="new-todo">Add more ToDo's</label>
                     : <label htmlFor="new-todo">Add ToDo</label>
                   }
@@ -122,7 +129,7 @@ class Main extends React.Component {
                     onChange={(e) => this.handleNewTodo(e)}
                     />
                   <button className="btn btn-primary" disabled={!this.state.newTodo.text} 
-                    onClick={() => this.addTodo()}>Add</button>
+                    onClick={() => this.addTodoAsync()}>Add Todo</button>
                 </div>
               </form>
             </div>
@@ -143,10 +150,8 @@ class Main extends React.Component {
 }
 
 Main.propTypes = {
-  addTodo: PropTypes.func,
-  removeTodo: PropTypes.func,
   lists: PropTypes.array,
-  list: PropTypes.object
+  list: PropTypes.array
 }
 
 const mapStateToProps = (state) => {
@@ -155,13 +160,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addTodo: (todo, path) => dispatch(addTodo(todo, path)),
-    removeTodo: (id, path) => dispatch(removeTodo(id, path))
-  }
-}
-
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-  )(Main)
+export default connect(mapStateToProps)(Main)

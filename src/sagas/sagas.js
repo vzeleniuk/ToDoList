@@ -1,6 +1,7 @@
 import { all, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { getFirebase } from 'react-redux-firebase';
 import { requestLists, requestListsSuccess, requestListsError, addListSuccess, addListError, removeListError, removeListSuccess } from '../store/actions/listActions';
+import { addTodoSuccess, addTodoError, removeTodoSuccess, removeTodoError } from '../store/actions/itemActions';
 import fbConfigApp, { databaseRef } from "../config/fbConfig";
 
 function* watchFetchLists() {
@@ -49,7 +50,6 @@ function* removeList(key) {
   } catch (error) {
     yield put(removeListError(error))
   }
-
 }
 
 function* watchAddTdo() {
@@ -57,15 +57,32 @@ function* watchAddTdo() {
 }
 
 function* addTodoAsync(newTodo) {
-  console.log('addListAsync', newTodo.payload);
   try {
-    const newTodoRef = yield getFirebase().push('lists', newTodo.payload);
-    const addedTodo = yield fbConfigApp.database().ref(`/lists/${newTodoRef.key}`)
+    const newTodoRef = yield fbConfigApp.database().ref(`/lists/${newTodo.payload.key}/`)
+      .child('items').push(newTodo.payload.newTodo);
+    const addedTodo = yield fbConfigApp.database().ref(`/lists/${newTodo.payload.key}/items/${newTodoRef.key}`)
       .once('value')
       .then(snap => snap.val())
-    yield put(addListSuccess(addedTodo, newTodoRef.key));
+  console.log('Todo added', newTodoRef.key, addedTodo)
+    yield put(addTodoSuccess(newTodo.payload.key, newTodoRef.key, addedTodo));
   } catch (error) {
-    yield put(addListError(error));
+    yield put(addTodoError(error));
+  }
+}
+
+function* watchRemoveTodo() {
+  yield takeLatest('REMOVE_TODO_ASYNC', removeTodoAsync);
+}
+
+function* removeTodoAsync(key) {
+  console.log('remove TODO saga', key.payload.listKey, key.payload.todoKey);
+  try {
+    yield fbConfigApp.database().ref(`/lists/${key.payload.listKey}/items/`)
+      .child(key.payload.todoKey)
+      .remove();
+    yield put(removeTodoSuccess(key.payload.listKey, key.payload.todoKey));
+  } catch (error) {
+    yield put(removeTodoError(error));
   }
 }
 
@@ -74,6 +91,7 @@ export default function* rootSaga() {
     watchAddList(),
     watchFetchLists(),
     watchRemoveList(),
-    watchAddTdo()
+    watchAddTdo(),
+    watchRemoveTodo()
   ])
 }

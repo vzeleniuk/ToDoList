@@ -63,6 +63,12 @@ input:checked + label {
   margin-right: 10px;
 }
 
-.btn-del {
+.btn-list {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+}
+
+.btn-todo {
   float: right;
 }

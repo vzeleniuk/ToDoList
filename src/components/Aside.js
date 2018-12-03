@@ -12,7 +12,8 @@ class Aside extends React.Component {
         listName: '',
         dateCreated: '',
         items: []
-      }
+      },
+      activeList: ''
     }
     this.onNewListName = this.onNewListName.bind(this);
   }
@@ -29,72 +30,61 @@ class Aside extends React.Component {
     })
   }
 
-  addList() {
-    this.props.dispatch(addListAsync(this.state.newList));
+  sortLists() {
+    const map = new Map(Object.entries(this.props.lists));
+    map[Symbol.iterator] = function* () {
+      yield* [...this.entries()].sort((a, b) => new Date(a[1].dateCreated) - new Date(b[1].dateCreated));
+    }
+    return [...map];
+  }
+
+  setActive(listKey) {
     this.setState({
-      newList: {
-        id: '',
-        listName: '',
-        dateCreated: '',
-        items: []
-      }
+      ...this.state,
+      activeList: listKey
     })
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   const difference = Object.keys(this.props.lists).length !== Object.keys(nextProps.lists).length;
-  //   console.log('Should Aside update?', Object.keys(this.props.lists).length, Object.keys(nextProps.lists).length, difference);
-  //   return difference;
-  // }
+  addList() {
+    this.props.dispatch(addListAsync(this.state.newList));
+    this.setState({
+      newList: { id: '', listName: '', dateCreated: '', items: [] }
+    })
+  }
 
   render() {
-    console.log('aside render', this.props.lists, this.state)
+    console.log('aside render', this.props.lists, this.state);
     return(
       <aside>
         <div className="mt-6">
           <h4 className="mt-4 mb-4 text-center">My TODOs</h4>
           {this.props.lists 
-            ? <div className="list-group">
-                {Object.entries(this.props.lists).map(([key, value]) => (
-                  <p onClick={() => this.props.dispatch(chooseList(value))} className="list-group-item list-group-item-secondary" key={value.id}>{value.listName}
-                    <button type="button" className="btn btn-danger btn-sm btn-del"
-                            onClick={() => this.props.dispatch(removeList(key))}>x</button>
-                  </p>
+            ? <ul className="list-group">            
+                {this.sortLists().map(list => (
+                  <li className={`list-group-item list-group-item-action ${this.state.activeList === list[0] ? 'active' : null}`}
+                    key={list[0]}>
+                    <p className='mb-0' onClick={() => {this.props.dispatch(chooseList(list[0], list[1])); this.setActive(list[0])}}>{list[1].listName}</p>
+                    <button type="button" className="btn btn-danger btn-sm btn-del btn-list"
+                            onClick={() => this.props.dispatch(removeList(list[0]))}>x</button>
+                  </li>
                 ))}
-              </div>
+              </ul>
             : <div className="row mt-6">
                 <Pulse />
               </div>}
         </div>
         
-        <div className="row mt-4 mb-4 text-center">
+        <div className="mt-4 mb-4 text-center">
         {this.props.lists 
-          ? <input className="form-control" type="text" value={this.state.newList.listName} placeholder="Enter New ToDo List Title"
+          ? <input className="form-control col-12" type="text" value={this.state.newList.listName} placeholder="Enter New ToDo List Title"
             onChange={(event) => this.onNewListName(event)}/>
           : null}
           <button disabled={!this.state.newList.listName} onClick={() => this.addList()} 
-            className="btn btn-primary mt-4">addListAsync</button>
+            className="btn btn-primary mt-4">Add List</button>
         </div>
       </aside>
     )
   }
 }
-
-// class MyInput extends Component {
-//   constructor() {
-//     super();
-//     this.state = {value: ""};
-//   }
-
-//   update = (e) => {
-//     this.setState({value: e.target.value});
-//   }
-
-//   render() {
-//     return (
-//       <input onChange={this.update} value={this.state.value} />
-//     );
-//   }
-// }
 
 export default connect()(Aside)
