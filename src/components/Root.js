@@ -13,13 +13,14 @@ export class Root extends React.Component {
   }
   
   render() {
-    console.log('root render', this.props.lists ? this.props.lists.lists : 'Firebase non available')
+    const {lists} = this.props;
+    console.log('root render', lists ? lists : 'Firebase non available')
     return(
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-4">
-            {this.props.lists 
-              ? <Aside lists={this.props.lists.lists}/>
+            {lists 
+              ? <Aside lists={lists}/>
               : <Pulse />
             }
           </div>

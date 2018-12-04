@@ -1,3 +1,15 @@
+export const fetchListAsync = (key) => {
+  return { type: 'FETCH_LIST', payload: key }
+};
+
+export const fetchListSuccess = (chosenList) => {
+  return { type: 'FETCH_LIST_SUCCESS', payload: chosenList }
+};
+
+export const fetchListError = () => {
+  return { type: 'FETCH_LIST_ERROR' }
+};
+
 export const addTodoAsync = (newTodo, key) => {
   return { type: 'ADD_TODO_ASYNC', payload: {newTodo, key} }
 };
@@ -21,16 +33,3 @@ export const removeTodoSuccess = (listKey, todoKey) => {
 export const removeTodoError = () => {
   return { type: 'REMOVE_TODO_FAILED' }
 };
-
-// export const removeTodo = (id, path) => {
-//   return (dispatch, getState, { getFirebase }) => {
-//     const firebase = getFirebase();
-//     firebase.remove(`lists/${path}/items/${id}`)
-//     .then(() => {
-//      dispatch({ type: 'REMOVE_TODO', id, path }) 
-//     })
-//     .catch((err) => {
-//       dispatch({ type: 'REMOVE_TODO_ERROR', err})
-//     })
-//   }
-// }

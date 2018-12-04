@@ -1,5 +1,3 @@
-// import { combineReducers } from 'redux';
-
 const initState = {
   lists: {},
   loading: false,
@@ -10,10 +8,10 @@ const fetchLists = (state = initState, action) => {
   switch (action.type) {
     case 'REQUEST_LISTS':
       return state;
-    case 'REQUEST_LISTS_SUCCESS':
+    case 'REQUEST_LISTS_SUCCESS': 
       return {
         ...state,
-        lists: action.payload
+        lists: action.payload.lists
       };
     case 'REQUEST_LISTS_FAILED':
       return {
@@ -23,47 +21,60 @@ const fetchLists = (state = initState, action) => {
     case 'CHOOSE_LIST':
       return {
         ...state,
-        selectedList: [action.payload.key, action.payload.list]
+        selectedListKey: action.payload.key
       };
     case 'ADD_LIST_SUCCESS':
-    console.log('added list success', action.payload.addedList, action.payload.addedListKey);
       return {
         ...state,
         lists: {
           ...state.lists,
-          lists: {
-            ...state.lists.lists,
-            [action.payload.addedListKey]: action.payload.addedList
-            }
-          }
+          [action.payload.addedListKey]: action.payload.addedList
+        }
       };
+    case 'FETCH_LIST_SUCCESS': 
+      console.log('action.payload.list', action.payload)
+      return {
+          ...state,
+          selectedListData: action.payload
+        };
     case 'ADD_LIST_FAILED':
       return {
         ...state,
         error: true
       };
-
     case 'REMOVE_LIST_FAILED':
       return {
         ...state,
         error: true
       };
-    default: 
+
+    case 'ADD_TODO_SUCCESS':
+      console.log('add todo', action.payload.listKey, action.payload.todoKey, action.payload.addedTodo);
+      return {
+        ...state,
+        lists: {
+          ...state.lists,
+          [action.payload.listKey]: {
+            ...state.lists[action.payload.listKey],
+            items: {
+              ...state.lists[action.payload.listKey].items,
+              [action.payload.todoKey]: action.payload.addedTodo
+            }
+          }
+        }
+      };
+    case 'ADD_TODO_ERROR':
+      console.log('add todo error', action.err);
       return state;
-  }
+    case 'REMOVE_TODO_SUCCESS':
+      console.log('remove todo success', action.payload.listKey, action.payload.todoKey);
+      return state;
+    case 'REMOVE_TODO_ERROR':
+      console.log('add todo error', action.err);
+      return state;
+    default:
+      return state;
+  } 
 }
-
-// const operateList = (state = initState, action) => {
-//    switch (action.type) {
-
-//     default: 
-//       return state;
-//   }
-// }
-
-// const listReducer = combineReducers({
-//   fetchLists,
-//   operateList
-// })
 
 export default fetchLists;

@@ -14,8 +14,9 @@ export default createStore(
   initialState,
   compose(
     applyMiddleware(sagaMiddleware),
-    reactReduxFirebase(fbConfigApp)
-  )
+    reactReduxFirebase(fbConfigApp),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  ),
 )
 
 sagaMiddleware.run(rootSaga);

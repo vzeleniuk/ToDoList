@@ -4,15 +4,19 @@ import { Pulse } from 'react-preloading-component';
 import { chooseList, addListAsync, removeList } from '../store/actions/listActions'
 
 class Aside extends React.Component {
+  static initialState = {
+    newList: {
+      id: '',
+      listName: '',
+      dateCreated: '',
+      items: []
+    }
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      newList: {
-        id: '',
-        listName: '',
-        dateCreated: '',
-        items: []
-      },
+      ...Aside.initialState,
       activeList: ''
     }
     this.onNewListName = this.onNewListName.bind(this);
@@ -49,7 +53,7 @@ class Aside extends React.Component {
   addList() {
     this.props.dispatch(addListAsync(this.state.newList));
     this.setState({
-      newList: { id: '', listName: '', dateCreated: '', items: [] }
+      ...Aside.initialState
     })
   }
 

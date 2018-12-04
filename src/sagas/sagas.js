@@ -1,7 +1,7 @@
 import { all, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { getFirebase } from 'react-redux-firebase';
 import { requestLists, requestListsSuccess, requestListsError, addListSuccess, addListError, removeListError } from '../store/actions/listActions';
-import { addTodoSuccess, addTodoError, removeTodoSuccess, removeTodoError } from '../store/actions/itemActions';
+import { addTodoSuccess, addTodoError, removeTodoSuccess, removeTodoError, fetchListSuccess, fetchListError } from '../store/actions/itemActions';
 import fbConfigApp, { databaseRef } from "../config/fbConfig";
 
 function* watchFetchLists() {
@@ -13,10 +13,25 @@ function* fetchListsAsync() {
     yield put(requestLists());
     const lists = yield databaseRef.once('value').then(
       snap => snap.val())
-      console.log(lists)
     yield put(requestListsSuccess(lists));
   } catch (error) {
     yield put(requestListsError());
+  }
+}
+
+function* watchFetchList() {
+  yield takeEvery('FETCH_LIST', fetchListAsync);
+}
+
+function* fetchListAsync(key) {
+  try {
+    const chosenList = yield fbConfigApp.database().ref(`/lists/${key.payload}`)
+      .once('value')
+      .then(snap => snap.val())
+      console.log('in saga', chosenList)
+    yield put(fetchListSuccess(chosenList));
+  } catch (error) {
+    yield put(fetchListError());
   }
 }
 
@@ -53,7 +68,7 @@ function* removeList(key) {
   }
 }
 
-function* watchAddTdo() {
+function* watchAddTodo() {
   yield takeLatest('ADD_TODO_ASYNC', addTodoAsync);
 }
 
@@ -92,8 +107,9 @@ export default function* rootSaga() {
   yield all([
     watchAddList(),
     watchFetchLists(),
+    watchFetchList(),
     watchRemoveList(),
-    watchAddTdo(),
+    watchAddTodo(),
     watchRemoveTodo()
   ])
 }
