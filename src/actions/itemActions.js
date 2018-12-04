@@ -6,8 +6,8 @@ export const fetchListSuccess = (chosenList) => {
   return { type: 'FETCH_LIST_SUCCESS', payload: chosenList }
 };
 
-export const fetchListError = () => {
-  return { type: 'FETCH_LIST_ERROR' }
+export const fetchListError = (error) => {
+  return { type: 'FETCH_LIST_ERROR', payload: error }
 };
 
 export const addTodoAsync = (newTodo, key) => {
@@ -18,18 +18,22 @@ export const addTodoSuccess = (listKey, todoKey, addedTodo) => {
   return { type: 'ADD_TODO_SUCCESS', payload: {listKey, todoKey, addedTodo} }
 };
 
-export const addTodoError = () => {
-  return { type: 'ADD_TODO_FAILED' }
+export const addTodoError = (error) => {
+  return { type: 'ADD_TODO_FAILED', payload: error }
 };
 
 export const removeTodoAsync = (listKey, todoKey) => {
   return { type: 'REMOVE_TODO_ASYNC', payload: {listKey, todoKey} }
 };
 
-export const removeTodoSuccess = (listKey, todoKey) => {
-  return { type: 'REMOVE_TODO_SUCCESS', payload: {listKey, todoKey} }
+export const removeTodoError = (error) => {
+  return { type: 'REMOVE_TODO_FAILED', payload: error }
 };
 
-export const removeTodoError = () => {
-  return { type: 'REMOVE_TODO_FAILED' }
+export const setTodoCheckedAsync = (listKey, todoKey) => {
+  return { type: 'SET_TODO_CHECKED_ASYNC', payload: {listKey, todoKey} }
+};
+
+export const setTodoCheckedError = (error) => {
+  return { type: 'SET_TODO_CHECKED_ERROR', payload: error }
 };

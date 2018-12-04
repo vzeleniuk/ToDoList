@@ -10,12 +10,12 @@ export const requestListsSuccess = (lists) => {
   return { type: 'REQUEST_LISTS_SUCCESS', payload: lists }
 };
 
-export const requestListsError = () => {
-  return { type: 'REQUEST_LISTS_FAILED' }
+export const requestListsError = (error) => {
+  return { type: 'REQUEST_LISTS_FAILED', payload: error }
 };
 
-export const chooseList = (key, list) => {
-  return { type: 'CHOOSE_LIST', payload: {key, list} }
+export const chooseList = (key) => {
+  return { type: 'CHOOSE_LIST', payload: key }
 };
 
 export const addListAsync = (newList) => {
@@ -26,8 +26,8 @@ export const addListSuccess = (addedList, addedListKey) => {
   return { type: 'ADD_LIST_SUCCESS', payload: {addedList, addedListKey} }
 };
 
-export const addListError = () => {
-  return { type: 'ADD_LIST_FAILED' }
+export const addListError = (error) => {
+  return { type: 'ADD_LIST_FAILED', payload: error }
 };
 
 export const removeList = (key) => {

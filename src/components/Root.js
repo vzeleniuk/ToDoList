@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchLists } from '../store/actions/listActions';
+import { fetchLists } from '../actions/listActions';
 
 import Main from './Main';
 import Aside from './Aside';
@@ -14,7 +14,6 @@ export class Root extends React.Component {
   
   render() {
     const {lists} = this.props;
-    console.log('root render', lists ? lists : 'Firebase non available')
     return(
       <div className="container">
         <div className="row">
@@ -34,7 +33,6 @@ export class Root extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('map state to props ROOT', state)
   return { 
     lists: state.list.lists
   }

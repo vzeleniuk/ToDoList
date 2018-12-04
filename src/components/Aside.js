@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Pulse } from 'react-preloading-component';
-import { chooseList, addListAsync, removeList } from '../store/actions/listActions'
+import { chooseList, addListAsync, removeList } from '../actions/listActions'
 
 class Aside extends React.Component {
   static initialState = {
@@ -39,7 +39,6 @@ class Aside extends React.Component {
     map[Symbol.iterator] = function* toMap() {
       yield* [...this.entries()].sort((a, b) => new Date(a[1].dateCreated) - new Date(b[1].dateCreated));
     }
-
     return [...map];
   }
 
@@ -57,8 +56,12 @@ class Aside extends React.Component {
     })
   }
 
+  deleteList(list) {
+    this.props.dispatch(removeList(list));
+    this.props.dispatch(chooseList());
+  }
+
   render() {
-    console.log('aside render', this.props.lists, this.state);
     return(
       <aside>
         <div className="mt-6">
@@ -68,12 +71,12 @@ class Aside extends React.Component {
                 {this.sortLists().map(list => (
                   <li className={`list-group-item list-group-item-action ${this.state.activeList === list[0] ? 'active' : null}`}
                     key={list[0]}>
-                    <p className="mb-0" onClick={() => { 
-                        this.props.dispatch(chooseList(list[0], list[1])); 
+                    <p className="mb-0" onClick={() => {
+                        this.props.dispatch(chooseList(list[0])); 
                         this.setActive(list[0]) 
                       }}>{list[1].listName}</p>
                     <button type="button" className="btn btn-danger btn-sm btn-del btn-list"
-                            onClick={() => this.props.dispatch(removeList(list[0]))}>x</button>
+                            onClick={() => this.deleteList(list[0])}>x</button>
                   </li>
                 ))}
               </ul>

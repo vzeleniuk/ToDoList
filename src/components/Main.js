@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchListAsync, addTodoAsync, removeTodoAsync } from '../store/actions/itemActions';
+import { fetchListAsync, addTodoAsync, removeTodoAsync, setTodoCheckedAsync } from '../actions/itemActions';
 
 class Main extends React.Component {
   static initialState = {
@@ -17,12 +17,12 @@ class Main extends React.Component {
     this.handleChecked = this.handleChecked.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
-    this.props.dispatch(fetchListAsync(newProps.listKey));
-    console.log('--Main--', newProps.listKey, this.props.list)
-
+  componentDidUpdate(prevProps) {
+    if (this.props.listKey !== prevProps.listKey) {
+      this.props.dispatch(fetchListAsync(this.props.listKey));
+    }  
   }
-
+    
   handleNewTodo(e) {
     this.setState({
       newTodo: {
@@ -35,9 +35,8 @@ class Main extends React.Component {
 
   addTodoAsync() {
     this.props.dispatch(addTodoAsync(this.state.newTodo, this.props.listKey));
-    this.setState({
-      ...Main.initialState
-    })
+    this.setState({ ...Main.initialState });
+    this.props.dispatch(fetchListAsync(this.props.listKey));
   }
 
   handleChecked() {
@@ -48,17 +47,16 @@ class Main extends React.Component {
 
   todoCompleted(i) {
     const newArr = this.objToArr();
-    if (newArr[i].checked) {
-      newArr[i].checked = false;
-    } else {
-      newArr[i].checked = true;
+    if (newArr[i].checked) { newArr[i].checked = false; } 
+    else { newArr[i].checked = true; }
+    const keyTodo = Object.keys(this.props.list.items);
+    this.props.dispatch(setTodoCheckedAsync(this.props.listKey, keyTodo[i]));
     }
-  }
 
   deleteTodo(i) {
     const keyTodo = Object.keys(this.props.list.items);
     this.props.dispatch(removeTodoAsync(this.props.listKey, keyTodo[i]));
-    console.log('delete todo in Main', this.props.listKey, keyTodo[i])
+    this.props.dispatch(fetchListAsync(this.props.listKey));
   }
 
   objToArr() {
@@ -81,8 +79,7 @@ class Main extends React.Component {
   }
 
   render() {
-    // const {list} = this.props.list[1];
-    console.log('MAIN', this.props);
+    // const {list} = this.props.list;
     const newArr = this.objToArr();
     return(
       <main className="container-main">
@@ -137,7 +134,7 @@ class Main extends React.Component {
 }
 
 Main.propTypes = {
-  list: PropTypes.string
+  listKey: PropTypes.string
 }
 
 const mapStateToProps = (state) => {

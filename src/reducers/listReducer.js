@@ -14,6 +14,7 @@ const fetchLists = (state = initState, action) => {
         lists: action.payload.lists
       };
     case 'REQUEST_LISTS_FAILED':
+    console.log(action.payload.error)
       return {
         ...state,
         error: true
@@ -21,7 +22,7 @@ const fetchLists = (state = initState, action) => {
     case 'CHOOSE_LIST':
       return {
         ...state,
-        selectedListKey: action.payload.key
+        selectedListKey: action.payload
       };
     case 'ADD_LIST_SUCCESS':
       return {
@@ -32,24 +33,24 @@ const fetchLists = (state = initState, action) => {
         }
       };
     case 'FETCH_LIST_SUCCESS': 
-      console.log('action.payload.list', action.payload)
       return {
           ...state,
           selectedListData: action.payload
         };
     case 'ADD_LIST_FAILED':
+    console.log(action.payload.error)
       return {
         ...state,
         error: true
       };
     case 'REMOVE_LIST_FAILED':
+    console.log(action.payload.error)
       return {
         ...state,
         error: true
       };
 
     case 'ADD_TODO_SUCCESS':
-      console.log('add todo', action.payload.listKey, action.payload.todoKey, action.payload.addedTodo);
       return {
         ...state,
         lists: {
@@ -64,14 +65,23 @@ const fetchLists = (state = initState, action) => {
         }
       };
     case 'ADD_TODO_ERROR':
-      console.log('add todo error', action.err);
-      return state;
-    case 'REMOVE_TODO_SUCCESS':
-      console.log('remove todo success', action.payload.listKey, action.payload.todoKey);
-      return state;
+    console.log(action.payload.error)
+      return {
+        ...state,
+        error: true
+      };
     case 'REMOVE_TODO_ERROR':
-      console.log('add todo error', action.err);
-      return state;
+    console.log(action.payload.error)
+      return {
+        ...state,
+        error: true
+      };
+    case 'SET_TODO_CHECKED_ERROR':
+    console.log(action.payload.error)
+      return {
+        ...state,
+        error: true
+      };
     default:
       return state;
   } 

@@ -12,8 +12,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'));
 
- store.subscribe(() => {
-    console.log('Store updated', store.getState())
-  });
-
 serviceWorker.unregister();
