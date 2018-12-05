@@ -31,7 +31,7 @@
     "tape": "^4.9.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=1000 && react-scripts start",
     "build": "react-scripts build",
     "test": "jest --coverage",
     "test:watch": "jest --watch",

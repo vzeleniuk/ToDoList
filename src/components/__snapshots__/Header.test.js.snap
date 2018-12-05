@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Header /> Header should render as expected 1`] = `
+<nav
+  className="navbar navbar-expand-lg navbar-dark bg-dark"
+>
+  <div
+    className="container"
+  >
+    <Link
+      className="navbar-brand"
+      replace={false}
+      to="/"
+    >
+      My TODO List
+    </Link>
+    <div
+      className="collapse navbar-collapse"
+      id="navbarCollapse"
+    >
+      <ul
+        className="navbar-nav ml-auto"
+      >
+        <li>
+          <Link
+            className="nav-link"
+            replace={false}
+            to="/"
+          >
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link
+            className="nav-link"
+            replace={false}
+            to="/user"
+          >
+            User
+          </Link>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+`;

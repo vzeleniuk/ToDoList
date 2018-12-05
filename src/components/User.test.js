@@ -5,8 +5,8 @@ import User from './User';
 
 describe('<User />', () => {
   test('User component should render as expected', () => {
-    const component = shallow(<User />);
-    const tree = toJson(component)
+    const wrapper = shallow(<User />);
+    const tree = toJson(wrapper)
     expect(tree).toMatchSnapshot();
   })
 

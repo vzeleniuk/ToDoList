@@ -6,10 +6,10 @@ import Main from './Main';
 import Aside from './Aside';
 import { Pulse } from 'react-preloading-component';
 
-export class Root extends React.Component {
+class Root extends React.Component {
 
   componentDidMount() {
-    this.props.dispatch(fetchLists());
+    this.props.fetchLists();
   }
   
   render() {
@@ -38,4 +38,10 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Root)
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchLists: () => dispatch(fetchLists())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root)
