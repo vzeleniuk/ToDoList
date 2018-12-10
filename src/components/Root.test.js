@@ -1,86 +1,47 @@
-import React from 'react';
-import { shallow, mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
-// import createSagaMiddleware from 'redux-saga';
-import configureMockStore from 'redux-mock-store';
-// import fetchMock from 'fetch-mock'
-import Root from './Root'; 
+// import React from 'react';
+// import * as enzyme from 'enzyme';
+// import toJson from 'enzyme-to-json';
+// // import createSagaMiddleware from 'redux-saga';
+// import configureMockStore from 'redux-mock-store';
+// // import fetchMock from 'fetch-mock'
+// import Root from './Root';
+// import Aside from './Aside';
+// import Main from './Main';
+// import { Pulse } from 'react-preloading-component';
 
-// const middlewares = [createSagaMiddleware()]
+// import { mapStateToProps, mapDispatchToProps } from './Root';
 
-describe('<Root />', () => {
-  const lists = {"listName": "Kitty Stuff", "dateCreated": "2018-02-01"};
-  const initialState = {
-    list: lists  
-  };
-  const props = {
-    fetchLists: jest.fn()
-  }
-  const mockStore = configureMockStore();
-  let wrapper, store;
+// // const middlewares = [createSagaMiddleware()]
 
-  beforeEach(() => {
-    store = mockStore(initialState);
-    wrapper = shallow(<Root store={store} {...props} />);
-  })
+// describe('<Root />', () => {
+//   const initialState = {};
+//   // const props = {
+//   //   fetchLists: fetchLists
+//   // }
+//   const mockStore = configureMockStore();
+//   let wrapper, store;
+//   // const dispatch = jest.fn();
+//   // const fetchLists = jest.fn();
+//   store = mockStore(initialState);
+//   wrapper = enzyme.shallow(<Root store={store}/>)
 
-  it('Root component should render as expected', () => {
-    const tree = toJson(wrapper);
-    expect(tree).toMatchSnapshot();
-  });
+//   // const mounted = enzyme.mount(<Root store={store} />)
 
-  it('should show todo lists from store', () => {
-    expect(wrapper.props().list).toBe(true);
-  })
-
-  it('should fetch data from firebase', () => {
-    expect(wrapper.props.fetchLists.mock.calls.length).toEqual(1);
-  })
-
-  // test('Root fetches data from firebase', () => {
-  //       store.dispatch(actions.fetchLists({ userId: 1, name: 'Kumar' }));
-  //       const wrapper = shallow(<Root />);
-  //       expect(wrapper).toHaveLength(1);
-  //     })
-});
-
-// const saga = ({ dispatch, getState }) => next => action => {
-//   if (typeof action === 'function') {
-//     return action(dispatch, getState)
-//   }
-// }
-
-// const create = () => {
-//   const store = {
-//     getState: jest.fn(() => ({})),
-//     dispatch: jest.fn()
-//   }
-//   const next = jest.fn();
-//   const invoke = action => saga(store)(next)(action);
-//   return { store, next, invoke }
-// }
-
-// describe("Root", () => {
-//     let props;
-//     let mountedRoot;
-//     const root = () => {
-//       if (!mountedRoot) {
-//         mountedRoot = mount(
-//           <Root {...props} />
-//         );
-//       }
-//       return mountedRoot;
-//     }
-  
-//     beforeEach(() => {
-//       props = {
-//         lists: undefined,
-//       };
-//       mountedRoot = undefined;
-//     });
-    
-//     it("always renders a div", () => {
-//         const divs = root().find("div");
-//         expect(divs.length).toBeGreaterThan(0);
-//       });
+//   it('Root component should render as expected', () => {
+//     const tree = toJson(wrapper);
+//     expect(tree).toMatchSnapshot();
 //   });
+
+
+//   // it('should show todo lists from store', () => {
+//   //   expect(wrapper.props().list).toBeTruthy();
+//   // })
+
+//   // it('should fetch data from firebase', () => {
+//   //   expect(fetchLists.mock.calls.length).toEqual(1);
+//   // })
+
+//   // it('should render a progress component while loading data', () => {
+//   //   const containsLoader = wrapper.containsMatchingElement('<Pulse />');
+//   //   expect(containsLoader).toBeTruthy();
+// });

@@ -4,7 +4,7 @@ const initState = {
   error: false
 };
 
-const fetchLists = (state = initState, action) => {
+export const listReducer = (state = initState, action) => {
   switch (action.type) {
     case 'REQUEST_LISTS':
       return state;
@@ -86,5 +86,3 @@ const fetchLists = (state = initState, action) => {
       return state;
   } 
 }
-
-export default fetchLists;

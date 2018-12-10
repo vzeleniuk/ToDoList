@@ -32,13 +32,13 @@ class Root extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+export const mapStateToProps = (state) => {
   return { 
     lists: state.list.lists
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return {
     fetchLists: () => dispatch(fetchLists())
   }

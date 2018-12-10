@@ -59,6 +59,10 @@ class Aside extends React.Component {
   deleteList(list) {
     this.props.dispatch(removeList(list));
     this.props.dispatch(chooseList());
+    this.setState({
+      ...this.state,
+      activeList: ''
+    })
   }
 
   render() {

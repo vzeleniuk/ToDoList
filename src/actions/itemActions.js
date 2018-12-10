@@ -30,8 +30,8 @@ export const removeTodoError = (error) => {
   return { type: 'REMOVE_TODO_FAILED', payload: error }
 };
 
-export const setTodoCheckedAsync = (listKey, todoKey) => {
-  return { type: 'SET_TODO_CHECKED_ASYNC', payload: {listKey, todoKey} }
+export const setTodoCheckedAsync = (listKey, todoKey, checked) => {
+  return { type: 'SET_TODO_CHECKED_ASYNC', payload: {listKey, todoKey, checked} }
 };
 
 export const setTodoCheckedError = (error) => {

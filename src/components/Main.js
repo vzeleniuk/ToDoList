@@ -46,12 +46,13 @@ class Main extends React.Component {
   }
 
   todoCompleted(i) {
+    let checked;
     const newArr = this.objToArr();
-    if (newArr[i].checked) { newArr[i].checked = false; } 
-    else { newArr[i].checked = true; }
+    if (newArr[i].checked) { newArr[i].checked = false; checked = newArr[i].checked} 
+    else { newArr[i].checked = true; checked = newArr[i].checked}
     const keyTodo = Object.keys(this.props.list.items);
-    this.props.dispatch(setTodoCheckedAsync(this.props.listKey, keyTodo[i]));
-    }
+    this.props.dispatch(setTodoCheckedAsync(this.props.listKey, keyTodo[i], checked));
+  }
 
   deleteTodo(i) {
     const keyTodo = Object.keys(this.props.list.items);

@@ -5,11 +5,7 @@ import { requestLists, requestListsSuccess, requestListsError,
 import { fetchListSuccess, fetchListError } from '../actions/itemActions';
 import fbConfigApp, { databaseRef } from '../config/fbConfig';
 
-function* watchFetchLists() {
-  console.log('man');
-  yield takeEvery('FETCH_LISTS', fetchListsAsync);
-}
-function* fetchListsAsync() {
+export function* fetchListsAsync() {
   try {
     yield put(requestLists());
     const lists = yield databaseRef.once('value').then(
@@ -20,10 +16,7 @@ function* fetchListsAsync() {
   }
 }
 
-function* watchFetchList() {
-  yield takeEvery('FETCH_LIST', fetchListAsync);
-}
-function* fetchListAsync(key) {
+export function* fetchListAsync(key) {
   try {
     const chosenList = yield fbConfigApp.database().ref(`/lists/${key.payload}`)
       .once('value')
@@ -34,10 +27,7 @@ function* fetchListAsync(key) {
   }
 }
 
-function* watchAddList() {
-  yield takeLatest('ADD_LIST_ASYNC', addListAsync);
-}
-function* addListAsync(newList) {
+export function* addListAsync(newList) {
   try {
     const newListRef = yield getFirebase().push('lists', newList.payload);
     const addedList = yield fbConfigApp.database().ref(`/lists/${newListRef.key}`)
@@ -49,10 +39,7 @@ function* addListAsync(newList) {
   }
 }
 
-function* watchRemoveList() {
-  yield takeLatest('REMOVE_LIST', removeList);
-}
-function* removeList(key) {
+export function* removeList(key) {
   try {
     yield fbConfigApp.database().ref('lists')
       .child(key.payload)
@@ -65,9 +52,9 @@ function* removeList(key) {
 
 export default function* listSaga() {
   yield all([
-    watchAddList(),
-    watchFetchLists(),
-    watchFetchList(),
-    watchRemoveList()
+    takeLatest('ADD_LIST_ASYNC', addListAsync),
+    takeEvery('FETCH_LISTS', fetchListsAsync),
+    takeEvery('FETCH_LIST', fetchListAsync),
+    takeLatest('REMOVE_LIST', removeList)
   ])
 }

@@ -40,7 +40,7 @@ function* setTodoCheckedAsync(checkTodo) {
   try {
     yield fbConfigApp.database().ref(`/lists/${checkTodo.payload.listKey}/items/`)
       .child(checkTodo.payload.todoKey)
-      .update({checked: true});
+      .update({checked: checkTodo.payload.checked});
   } catch (error) {
     yield put(setTodoCheckedError(error))
   }
